@@ -1,6 +1,6 @@
 package com.ahlenius.wigell_cinema.controller;
 
-import com.ahlenius.wigell_cinema.model.Movie;
+import com.ahlenius.wigell_cinema.model.Customer;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,54 +10,40 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class CustomerController {
 
-    @GetMapping("/movies")
-    @PreAuthorize("hasRole('USER')or hasRole('ADMIN')")
-    public List<Movie> getMovies() {
-        return null;//Lista filmer
-    }
-
-    @GetMapping("/screenings?movieId={movieId}&date={YYYY-MM-DD}")
-    @PreAuthorize("hasRole('USER')")
-    public List<ScreeningDto> findScreeningsByDate() {
-        return null;
-        // Lista föreställningar
-    }
-
-    @PostMapping("/tickets")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseBody<TicketDto> createTicket(@RequestBody CreateTicketDto dto) {
+    @PostMapping("customers/{customerId}/addresses")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseBody<AddressDto> addNewCostumerAddress(@PathVariable("customerId") Long id, @RequestBody CreateAddressDto dto) {
         return null;
     }
 
-    @GetMapping("/tickets?customerId={customerId}")
-    @PreAuthorize("hasRole('USER')")
-    public List<TicketDto> findTicketsByCustomerId(@PathVariable("customerId") String customerId) {
-        //Se biljetter
+    @DeleteMapping("customers/{customerId}/addresses/{addressId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseBody<Void> deleteCustomerAddressById(@PathVariable("customerId") Long customerId, @PathVariable("addressId") Long addressId) {
         return null;
     }
 
-// RUMSBOKNINGAR
-
-    @PostMapping("/bookings")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseBody<BookingDto> reserveRoom(@RequestBody ReserveBookingDto dto) {
-        // Reservera lokaal
+    @GetMapping("/customers")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<Customer> getCustomers() {
         return null;
+    } //Lista kunder GET /api/v1/customers
+
+    @PostMapping("/customers")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseBody<CustomerDto> createCustomer(@RequestBody CreateCustomerDto dto) {
+        return null; //Lägga till kund POST /api/v1/customers
     }
 
-    @PatchMapping("/bookings?customerId={customerId}")
-    public ResponseBody<BookingDto> patchBooking(@RequestBody patchBookingDto) {
-        return null;
-        //Uppdatera bokning PATCH /api/v1/bookings/{bookingId} (tillåtna fält: datum, teknisk utrustning) Uppdatera rumsbokning
+    @DeleteMapping("customers/{customerId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseBody<Void> deleteCustomer(@PathVariable("customerId") Long id) {
+        return ResponseBody.noContent.build();//Ta bort kund DELETE /api/v1/customers/{customerId}
     }
 
-
-    @GetMapping("/api/v1/bookings?customerId={customerId}")
-    @PreAuthorize("hasRole('USER')")
-    public List<BookingDto> findBookingsByCustomerId(@PathVariable("customerId") String customerId) {
-        //Se tidigare och aktiva bokningar GET /api/v1/bookings?customerId={customerId}
-        return null;
+    @PutMapping("customers/{customerId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseBody<CustomerDto> updateCustomer(@PathVariable("customerId") Long id, @RequestBody UpdateCustomerDto dto) {
+        return null;//Uppdatera kund
     }
-
 
 }
