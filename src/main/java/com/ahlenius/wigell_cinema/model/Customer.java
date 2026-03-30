@@ -12,8 +12,10 @@ public class Customer {
     private String firstName;
     @Column(name = "last_name",length = 50, nullable = false)
     private String lastName;
-    @Column(length = 50)
-    private String address;
+    @OneToOne(cascade = CascadeType.PERSIST)
+    private Address address;
+    @Column(length = 30, nullable = false)
+    private String email;
     @Column(length = 10, nullable = false)
     private String phone;
     @Column(length = 50, nullable = false, unique = true)
@@ -21,10 +23,12 @@ public class Customer {
     @Column(name= "keycloak_user_id",unique = true, length = 36)
     private String keycloakUserId;
 
-    public Customer(String firstName, String lastName, String address, String username) {
+    public Customer(String firstName, String lastName,Address address,String email,String phone, String username) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
+        this.email = email;
+        this.phone = phone;
         this.username = username;
     }
 
@@ -50,11 +54,11 @@ public class Customer {
         this.lastName = lastName;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
@@ -80,6 +84,14 @@ public class Customer {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
 
