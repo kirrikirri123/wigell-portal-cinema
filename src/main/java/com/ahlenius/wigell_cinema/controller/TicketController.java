@@ -10,7 +10,7 @@ public class TicketController {
 
     @PostMapping("/tickets")
     @PreAuthorize("hasRole('USER')")
-    public ResponseBody<TicketDto> createTicket(@RequestBody CreateTicketDto dto) {
+    public ResponseEntity<TicketDto> createTicket(@RequestBody CreateTicketDto dto) {
         return null;
     }
 

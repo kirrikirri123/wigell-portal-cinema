@@ -22,8 +22,7 @@ public class Booking {
     @Column(name= "total_price_USD",length = 50, nullable = false)
     private double totalPriceUSD; // sett detta med hjälp av converterfunction.
 
-    protected Booking() {
-    }
+    protected Booking() {}
 
     public Booking(int attendees, Room room, LocalDateTime date, Movie movie, boolean privateSpeaker, double totalPriceSEK, double totalPriceUSD) {
         this.attendees = attendees;
