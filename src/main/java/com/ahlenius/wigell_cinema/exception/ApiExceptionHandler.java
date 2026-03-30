@@ -12,13 +12,13 @@ import java.util.Map;
 public class ApiExceptionHandler {
 
     //mall
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<?> NotFound(NotFoundException e) {
+    @ExceptionHandler(NoSuchMemberFoundException.class)
+    public ResponseEntity<?> NotFound(NoSuchMemberFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 Map.of(
                         "timestamp", LocalDateTime.now().toString(),
                         "status", (HttpStatus.NOT_FOUND.value()),
-                        "error", "Not Found",
+                        "error", "No member found",
                         "message", e.getMessage()
                 ));
     }

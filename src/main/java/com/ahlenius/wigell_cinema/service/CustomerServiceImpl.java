@@ -39,9 +39,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     public CustomerResponse updateCustomer(Long id, UpdateCustomerDto dto) {
         Customer found = repo.findById(id).orElseThrow(()-> new NoSuchMemberFoundException("Hittade ingen matchande kund med id: "+ id));
-
-
-        return null;
+        Customer updated = CustomerMapper.applyUpdate(found,dto);
+        return CustomerMapper.toDto(repo.save(updated));
     }
 
     @Override
