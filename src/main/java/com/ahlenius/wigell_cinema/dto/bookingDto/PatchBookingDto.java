@@ -1,4 +1,6 @@
 package com.ahlenius.wigell_cinema.dto.bookingDto;
 
-public class PatchBookingDto {
+public record PatchBookingDto (
+
+){
 }

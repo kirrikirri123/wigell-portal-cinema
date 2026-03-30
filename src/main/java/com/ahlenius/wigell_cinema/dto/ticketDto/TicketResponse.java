@@ -1,4 +1,4 @@
 package com.ahlenius.wigell_cinema.dto.ticketDto;
 
-public record TicketDto() {
+public record TicketResponse() {
 }

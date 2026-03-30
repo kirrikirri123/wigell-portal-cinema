@@ -1,7 +1,7 @@
 package com.ahlenius.wigell_cinema.controller;
 
 import com.ahlenius.wigell_cinema.dto.movieDto.CreateMovieDto;
-import com.ahlenius.wigell_cinema.dto.movieDto.MovieDto;
+import com.ahlenius.wigell_cinema.dto.movieDto.MovieResponse;
 import com.ahlenius.wigell_cinema.model.Movie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,7 +21,7 @@ public class MovieContoller {
 
     @GetMapping("/movies")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<MovieDto> createMovie(@RequestBody CreateMovieDto dto) {
+    public ResponseEntity<MovieResponse> createMovie(@RequestBody CreateMovieDto dto) {
         return null;
 
     }
@@ -34,7 +34,7 @@ public class MovieContoller {
     }
     @GetMapping("/movies/{movieId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<MovieDto> findMovieById(@PathVariable("movieId") Long id) {
+    public ResponseEntity<MovieResponse> findMovieById(@PathVariable("movieId") Long id) {
         return null;
 
     }

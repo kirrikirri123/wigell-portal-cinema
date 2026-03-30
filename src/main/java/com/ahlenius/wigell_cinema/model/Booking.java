@@ -1,7 +1,10 @@
 package com.ahlenius.wigell_cinema.model;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "booking")
@@ -12,7 +15,8 @@ public class Booking {
     private int attendees;
     @OneToOne(mappedBy = "room_id")  //En bokning ett rum, behöver rummet veta om bokningen?
     private Room room;
-    private LocalDateTime date;
+    private LocalDate date;
+    private LocalTime time;
     @OneToOne(mappedBy = "movie_id") // Lägg in en NoShow i databasen?
     private Movie movie;
     @Column(nullable = false)
@@ -24,24 +28,25 @@ public class Booking {
 
     protected Booking() {}
 
-    public Booking(int attendees, Room room, LocalDateTime date, Movie movie, boolean privateSpeaker, double totalPriceSEK, double totalPriceUSD) {
+    public Booking(int attendees, Room room, LocalDate date, LocalTime time, Movie movie, boolean privateSpeaker, double totalPriceSEK, double totalPriceUSD) {
         this.attendees = attendees;
         this.room = room;
         this.date = date;
+        this.time = time;
         this.movie = movie;
         this.privateSpeaker = privateSpeaker;
         this.totalPriceSEK = totalPriceSEK;
         this.totalPriceUSD = totalPriceUSD;
     }
 
-    public Booking(int attendees, Room room, LocalDateTime date, Movie movie, boolean privateSpeaker) {
+    public Booking(int attendees, Room room, LocalDate date,LocalTime time, Movie movie, boolean privateSpeaker) {
         this.attendees = attendees;
         this.room = room;
         this.date = date;
+        this.time = time;
         this.movie = movie;
         this.privateSpeaker = privateSpeaker;
     }
-
 
     public Long getId() {
         return id;
@@ -79,12 +84,19 @@ public class Booking {
         this.movie = movie;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public LocalTime getTime() {
+        return time;
+    }
+    public void setTime(LocalTime time) {
+        this.time = time;
     }
 
     public Room getRoom() {

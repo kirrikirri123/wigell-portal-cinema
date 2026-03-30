@@ -1,7 +1,7 @@
 package com.ahlenius.wigell_cinema.controller;
 
 import com.ahlenius.wigell_cinema.dto.screeningDto.CreateScreeningDto;
-import com.ahlenius.wigell_cinema.dto.screeningDto.ScreeningDto;
+import com.ahlenius.wigell_cinema.dto.screeningDto.ScreeningResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -15,21 +15,21 @@ public class ScreeningController {
 
     @GetMapping("/screenings?movieId={movieId}&date={YYYY-MM-DD}")
     @PreAuthorize("hasRole('USER')")
-    public List<ScreeningDto> findScreeningsByDate(@PathVariable("movieId") Long movieId, @PathVariable LocalDateTime date) {
+    public List<ScreeningResponse> findScreeningsByDate(@PathVariable("movieId") Long movieId, @PathVariable LocalDateTime date) {
         return null;
         // Lista föreställningar
     }
 
     @GetMapping("/screening")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<ScreeningDto> findAllScreenings() {
+    public List<ScreeningResponse> findAllScreenings() {
         return null;
         //Lista föreställningar GET /api/v1/screenings
     }
 
     @PostMapping("/screening")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ScreeningDto> createScreening(@RequestBody CreateScreeningDto dto) {
+    public ResponseEntity<ScreeningResponse> createScreening(@RequestBody CreateScreeningDto dto) {
         return null;
     }
 

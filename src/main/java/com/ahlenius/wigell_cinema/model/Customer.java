@@ -18,6 +18,8 @@ public class Customer {
     private String phone;
     @Column(length = 50, nullable = false, unique = true)
     private String username;
+    @Column(name= "keycloak_user_id",unique = true, length = 36)
+    private String keycloakUserId;
 
     public Customer(String firstName, String lastName, String address, String username) {
         this.firstName = firstName;
@@ -62,6 +64,22 @@ public class Customer {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getKeycloakUserId() {
+        return keycloakUserId;
+    }
+
+    public void setKeycloakUserId(String keycloakUserId) {
+        this.keycloakUserId = keycloakUserId;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
 

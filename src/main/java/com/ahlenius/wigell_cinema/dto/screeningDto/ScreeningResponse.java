@@ -1,4 +1,4 @@
 package com.ahlenius.wigell_cinema.dto.screeningDto;
 
-public record ScreeningDto() {
+public record ScreeningResponse() {
 }
