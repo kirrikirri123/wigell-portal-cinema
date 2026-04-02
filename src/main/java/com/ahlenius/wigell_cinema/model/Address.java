@@ -7,19 +7,30 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 20, nullable = false)
+    @Column(name= "street", length = 15, nullable = false)
     private String street;
-    @Column(length = 7, nullable = false)
+    @Column(name = "zipcode",length = 7, nullable = false)
     private String zipcode;
     @Column(length = 15, nullable = false)
     private String city;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
 
     protected Address() {
     }
-    public Address(String city, String zipcode, String street) {
-        this.city = city;
-        this.zipcode = zipcode;
+
+    public Address( String street,String zipcode,String city) {
         this.street = street;
+        this.zipcode = zipcode;
+        this.city = city;
+    }
+
+    public Address(String street, String zipcode, String city, Customer customer) {
+        this.street = street;
+        this.zipcode = zipcode;
+        this.city = city;
+        this.customer = customer;
     }
 
     public Long getId() {
@@ -48,5 +59,13 @@ public class Address {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }

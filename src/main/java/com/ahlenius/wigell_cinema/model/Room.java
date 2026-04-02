@@ -8,9 +8,11 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true, length = 25)
     private String name;
     @Column(name = "max_guest",length = 3, nullable = false)
     private int maxGuest;
+    @Column(length = 10)
     private String equipment; // enum?
 
     protected Room() {

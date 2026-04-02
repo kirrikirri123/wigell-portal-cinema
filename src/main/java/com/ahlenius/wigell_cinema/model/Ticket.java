@@ -2,6 +2,7 @@ package com.ahlenius.wigell_cinema.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
@@ -9,14 +10,15 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(,unique = true)
+    @Column(unique = true, length = 100)
     private String ticketNr = UUID.randomUUID().toString();
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY) // osäker på realtionen.
+    @JoinColumn(name="screening_id")
     private Screening screening;
-    @Column(name = "total_price_SEK",length = 50, nullable = false) // alltid samma pris
-    private double totalPriceSEK; // sett detta utifrån attendees och movie/privateSpeeker
-    @Column(name= "total_price_USD",length = 50, nullable = false) // alltid samma pris
-    private double totalPriceUSD; // sett detta med hjälp av converterfunction.
+    @Column(name = "total_price_SEK",length = 15, nullable = false) // alltid samma pris
+    private BigDecimal totalPriceSEK; // sett detta utifrån attendees och movie/privateSpeeker
+    @Column(name= "total_price_USD",length = 15, nullable = false) // alltid samma pris
+    private BigDecimal totalPriceUSD; // sett detta med hjälp av converterfunction.
 
     protected Ticket() {}
 
@@ -24,19 +26,19 @@ public class Ticket {
         this.screening = screening;
     }
 
-    public double getTotalPriceUSD() {
+    public BigDecimal getTotalPriceUSD() {
         return totalPriceUSD;
     }
 
-    public void setTotalPriceUSD(double totalPriceUSD) {
+    public void setTotalPriceUSD(BigDecimal totalPriceUSD) {
         this.totalPriceUSD = totalPriceUSD;
     }
 
-    public double getTotalPriceSEK() {
+    public BigDecimal getTotalPriceSEK() {
         return totalPriceSEK;
     }
 
-    public void setTotalPriceSEK(double totalPriceSEK) {
+    public void setTotalPriceSEK(BigDecimal totalPriceSEK) {
         this.totalPriceSEK = totalPriceSEK;
     }
 

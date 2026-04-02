@@ -12,12 +12,17 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name= "customer_id")
+    private Customer customer;
     private int attendees;
-    @OneToOne(mappedBy = "room_id")  //En bokning ett rum, behöver rummet veta om bokningen?
+    @OneToOne(cascade = CascadeType.ALL)  //En bokning ett rum, behöver rummet veta om bokningen?
+    @JoinColumn(name= "room_id")
     private Room room;
     private LocalDate date;
     private LocalTime time;
-    @OneToOne(mappedBy = "movie_id") // Lägg in en NoShow i databasen?
+    @OneToOne(cascade = CascadeType.ALL) // Lägg in en NoShow i databasen?
+    @JoinColumn(name="movie_id")
     private Movie movie;
     @Column(nullable = false)
     private boolean privateSpeaker; // hur ska man lägga upp detta? Vore av fördel att ha en vari
@@ -113,5 +118,12 @@ public class Booking {
 
     public void setAttendees(int attendees) {
         this.attendees = attendees;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }

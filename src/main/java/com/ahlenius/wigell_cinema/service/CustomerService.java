@@ -12,5 +12,5 @@ public interface CustomerService {
     CustomerResponse updateCustomer(Long id,UpdateCustomerDto dto);
     List<CustomerResponse> findAllCustomer();
     AddressResponse addAddressToCostumerId(Long id,CreateAddressDto dto);
-    void deleteAddressByCustomerId(Long id);
+    void deleteAddressByCustomerId(Long customerId,Long addressId);
 }
