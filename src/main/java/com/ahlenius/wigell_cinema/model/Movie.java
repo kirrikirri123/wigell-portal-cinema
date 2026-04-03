@@ -10,14 +10,16 @@ public class Movie {
     private Long id;
     @Column(name = "title",length = 50, nullable = false)
     private String title;
-    @Column(name = "genre",length = 10, nullable = false)
-    private String genre; // ENUM?
-    @Column(name= "duration_min",length = 50)
+    @Column(name = "genre",length = 15, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Genre genre;
+    @Column(name= "duration_min",length = 5)
     private int durationMin;
-    @Column(length = 2, nullable = false)
-    private String ageLimit; //Enum
+    @Column(length = 7, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private AgeLimit ageLimit;
 
-    public Movie(String title, String genre, int durationMin, String ageLimit) {
+    public Movie(String title, Genre genre, int durationMin, AgeLimit ageLimit) {
         this.title = title;
         this.genre = genre;
         this.durationMin = durationMin;
@@ -38,14 +40,6 @@ public class Movie {
         this.title = title;
     }
 
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
     public int getDurationMin() {
         return durationMin;
     }
@@ -54,11 +48,19 @@ public class Movie {
         this.durationMin = durationMin;
     }
 
-    public String getAgeLimit() {
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
+    public AgeLimit getAgeLimit() {
         return ageLimit;
     }
 
-    public void setAgeLimit(String ageLimit) {
+    public void setAgeLimit(AgeLimit ageLimit) {
         this.ageLimit = ageLimit;
     }
 }

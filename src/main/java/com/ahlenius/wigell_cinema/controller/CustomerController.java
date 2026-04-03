@@ -1,7 +1,6 @@
 package com.ahlenius.wigell_cinema.controller;
 
 import com.ahlenius.wigell_cinema.dto.customerDto.*;
-import com.ahlenius.wigell_cinema.exception.ResponseIsNullException;
 import com.ahlenius.wigell_cinema.service.CustomerService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

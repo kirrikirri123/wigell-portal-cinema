@@ -2,24 +2,53 @@ package com.ahlenius.wigell_cinema.service;
 
 import com.ahlenius.wigell_cinema.dto.movieDto.CreateMovieDto;
 import com.ahlenius.wigell_cinema.dto.movieDto.MovieResponse;
+import com.ahlenius.wigell_cinema.exception.NoMovieFoundException;
+import com.ahlenius.wigell_cinema.exception.NoSuchMemberFoundException;
+import com.ahlenius.wigell_cinema.mapper.MovieMapper;
+import com.ahlenius.wigell_cinema.model.Movie;
 import com.ahlenius.wigell_cinema.repository.MovieRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+
+
 @Service
 public class MovieService {
 
-     private MovieRepository repo;
+    private MovieRepository repo;
 
     public MovieService(MovieRepository repo) {
         this.repo = repo;
     }
 
     @Transactional
-    public MovieResponse save(CreateMovieDto dto) {
-        //toEntity
-        return null;
+    public List<MovieResponse> findAll() {
+        return repo.findAll().stream()
+                .map(MovieMapper::toDto)
+                .toList();
     }
 
+    @Transactional
+    public MovieResponse save(CreateMovieDto dto) {
+        Movie movie = repo.save(MovieMapper.toEntity(dto));
+        return MovieMapper.toDto(movie);
+    }
 
-}
+    @Transactional
+    public void deleteMovie(Long id) {
+        if (!repo.existsById(id)) {
+            throw new NoSuchMemberFoundException("Hittade ingen film med id: " + id);
+        }
+        repo.deleteById(id);
+    }
+
+    @Transactional
+    public MovieResponse findMovieById(Long id) {
+        Movie movie = repo.findById(id).orElseThrow(()->new NoMovieFoundException("Hittade ingen film med id: " + id));
+        return MovieMapper.toDto(movie);
+           }
+
+
+    }
