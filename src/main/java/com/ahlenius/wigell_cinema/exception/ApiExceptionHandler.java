@@ -22,7 +22,6 @@ public class ApiExceptionHandler {
                         "message", e.getMessage()
                 ));
     }
-
     @ExceptionHandler(NoMatchingAddressIdException.class)
     public ResponseEntity<?> NoMatch(NoMatchingAddressIdException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
@@ -40,6 +39,16 @@ public class ApiExceptionHandler {
                         "timestamp", LocalDateTime.now().toString(),
                         "status", (HttpStatus.NO_CONTENT.value()),
                         "error", "No value to return",
+                        "message", e.getMessage()
+                ));
+    }
+    @ExceptionHandler(NoMovieFoundException.class)
+    public ResponseEntity<?> NotFound(NoMovieFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                Map.of(
+                        "timestamp", LocalDateTime.now().toString(),
+                        "status", (HttpStatus.NOT_FOUND.value()),
+                        "error", "No movie found",
                         "message", e.getMessage()
                 ));
     }
