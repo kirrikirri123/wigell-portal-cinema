@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -31,7 +30,7 @@ public class MovieService {
     }
 
     @Transactional
-    public MovieResponse save(CreateMovieDto dto) {
+    public MovieResponse saveMovie(CreateMovieDto dto) {
         Movie movie = repo.save(MovieMapper.toEntity(dto));
         return MovieMapper.toDto(movie);
     }

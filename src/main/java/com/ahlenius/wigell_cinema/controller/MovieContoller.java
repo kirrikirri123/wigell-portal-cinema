@@ -29,7 +29,7 @@ public class MovieContoller {
     @PostMapping("/movies")
  //   @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MovieResponse> createMovie(@RequestBody @Valid CreateMovieDto dto) {
-        var saved = service.save(dto);
+        var saved = service.saveMovie(dto);
         var uriLocation = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(saved.id()).toUri();
         return ResponseEntity.created(uriLocation).body(saved);
