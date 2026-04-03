@@ -1,6 +1,4 @@
 package com.ahlenius.wigell_cinema.config;
-
-import com.ahlenius.wigell_cinema.dto.roomDto.RoomResponse;
 import com.ahlenius.wigell_cinema.model.*;
 import com.ahlenius.wigell_cinema.repository.CustomerRepository;
 import com.ahlenius.wigell_cinema.repository.MovieRepository;
@@ -9,6 +7,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 
@@ -34,7 +34,8 @@ public class DataLoader {
                     new Movie("Äventyret", Genre.ADVENTURE, 120, AgeLimit.KIDS),
                     new Movie("Gripande Verklighet", Genre.DOCUMENTARY, 120, AgeLimit.TEENS),
                     new Movie("Help", Genre.HORROR, 190, AgeLimit.GROWNUP),
-                    new Movie("Chockerande vändingar", Genre.DRAMA, 60, AgeLimit.TEENS)
+                    new Movie("Chockerande vändingar", Genre.DRAMA, 60, AgeLimit.TEENS),
+
             );
             movieRepo.saveAll(testMovies);
 
@@ -48,7 +49,9 @@ public class DataLoader {
             roomRepo.saveAll(testRooms);
 
 
-            //List<RoomResponse> testBookings = List.of();
+            List<Booking> testBookings = List.of(
+                    new Booking(55,, 2026415, 19.00,, false)
+            );
             //List<Ticket> testTickets = List.of();
             //List<Address> testAddresses = List.of();
 

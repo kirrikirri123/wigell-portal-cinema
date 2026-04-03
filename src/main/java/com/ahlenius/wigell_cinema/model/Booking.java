@@ -33,7 +33,8 @@ public class Booking {
 
     protected Booking() {}
 
-    public Booking(int attendees, Room room, LocalDate date, LocalTime time, Movie movie, boolean privateSpeaker, double totalPriceSEK, double totalPriceUSD) {
+    public Booking(Customer customer, int attendees, Room room, LocalDate date, LocalTime time, Movie movie, boolean privateSpeaker, double totalPriceSEK, double totalPriceUSD) {
+        this.customer = customer;
         this.attendees = attendees;
         this.room = room;
         this.date = date;
@@ -43,13 +44,13 @@ public class Booking {
         this.totalPriceSEK = totalPriceSEK;
         this.totalPriceUSD = totalPriceUSD;
     }
-
-    public Booking(int attendees, Room room, LocalDate date,LocalTime time, Movie movie, boolean privateSpeaker) {
+ //konstruktor utan movie pga. kanske bara har en egen talare.
+    public Booking(Customer customer, int attendees, Room room, LocalDate date, LocalTime time, boolean privateSpeaker) {
+        this.customer = customer;
         this.attendees = attendees;
         this.room = room;
         this.date = date;
         this.time = time;
-        this.movie = movie;
         this.privateSpeaker = privateSpeaker;
     }
 
@@ -126,4 +127,6 @@ public class Booking {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+
+
 }

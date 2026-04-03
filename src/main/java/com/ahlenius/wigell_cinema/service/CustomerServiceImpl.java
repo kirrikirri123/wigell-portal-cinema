@@ -34,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public CustomerResponse createCustomer(CreateCustomerDto dto) {
-        //Lägg till nått exceptions!
+        //Vad vill vi validera här och vad kan man validera redan i DTO?
         Customer newCustomer = CustomerMapper.toEntity(dto);
         return CustomerMapper.toDto(repo.save(newCustomer));
     }
