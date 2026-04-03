@@ -3,7 +3,7 @@ import com.ahlenius.wigell_cinema.dto.bookingDto.BookingResponse;
 import com.ahlenius.wigell_cinema.dto.bookingDto.PatchBookingDto;
 import com.ahlenius.wigell_cinema.dto.bookingDto.ReserveBookingDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 public class BookingController {
 
     @PostMapping("/bookings")
-    @PreAuthorize("hasRole('USER')")
+  //  @PreAuthorize("hasRole('USER')")
     public ResponseEntity<BookingResponse> reserveRoom(@RequestBody ReserveBookingDto dto) {
         // Reservera lokal
         return null;
@@ -26,7 +26,7 @@ public class BookingController {
     }
 
     @GetMapping("bookings?customerId={customerId}")
-    @PreAuthorize("hasRole('USER')")
+   // @PreAuthorize("hasRole('USER')")
     public List<BookingResponse> findBookingsByCustomerId(@PathVariable("customerId") Long customerId) {
         //Se tidigare och aktiva bokningar GET /api/v1/bookings?customerId={customerId}
         return null;

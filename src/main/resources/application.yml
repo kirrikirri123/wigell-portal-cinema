@@ -1,0 +1,52 @@
+server:
+  port: 8583
+
+spring:
+  application:
+    name: wigell-cinema
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/realms
+  boot:
+    admin:
+      client:
+        url: http://localhost:9090
+        username: admin
+        password: admin
+        instance:
+          management-base-url: http://localhost:8088
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/wigell_cinema_db?createDatabaseIfNotExist=true
+    username: root
+    password: techtjej2026
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+      hibernate:
+        ddl-auto: create-drop
+      show-sql: true
+      properties:
+        hibernate:
+          format_sql: true
+
+management:
+  server:
+    port: 6083
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+keycloak:
+  server-url: http://localhost:8090
+  realm:
+  keycloak.admin:
+    realm:
+    client-id:
+    client-secret:

@@ -8,9 +8,11 @@ public class Screening {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(mappedBy = "movie_id") // varje screening måste ha en film men en movie behöver inte ha en screening.
+    @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = false) // varje screening måste ha en film men en movie behöver inte ha en screening.
+    @JoinColumn(name="movie_id")
     private Movie movie;
-    @OneToOne(mappedBy = "room_id") // behöver rummet veta att det har en screening?
+    @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = false) // behöver rummet veta att det har en screening?
+    @JoinColumn(name="room_id")
     private Room room;
     private LocalDateTime dateTime;
 
