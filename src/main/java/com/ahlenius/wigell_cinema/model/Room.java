@@ -12,7 +12,7 @@ public class Room {
     private String name;
     @Column(name = "max_guest",length = 3, nullable = false)
     private int maxGuest;
-    @Column(length = 10)
+    @Column(length = 75)
     private String equipment; // enum?
 
     protected Room() {
