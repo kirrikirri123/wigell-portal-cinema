@@ -3,7 +3,7 @@ package com.ahlenius.wigell_cinema.service;
 import com.ahlenius.wigell_cinema.dto.movieDto.CreateMovieDto;
 import com.ahlenius.wigell_cinema.dto.movieDto.MovieResponse;
 import com.ahlenius.wigell_cinema.exception.NoMovieFoundException;
-import com.ahlenius.wigell_cinema.exception.NoSuchMemberFoundException;
+import com.ahlenius.wigell_cinema.exception.NoCustomerFoundException;
 import com.ahlenius.wigell_cinema.mapper.MovieMapper;
 import com.ahlenius.wigell_cinema.model.Movie;
 import com.ahlenius.wigell_cinema.repository.MovieRepository;
@@ -38,7 +38,7 @@ public class MovieService {
     @Transactional
     public void deleteMovie(Long id) {
         if (!repo.existsById(id)) {
-            throw new NoSuchMemberFoundException("Hittade ingen film med id: " + id);
+            throw new NoCustomerFoundException("Hittade ingen film med id: " + id);
         }
         repo.deleteById(id);
     }

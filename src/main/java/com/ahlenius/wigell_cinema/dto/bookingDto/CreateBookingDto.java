@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public record CreateBookingDto(
-        @Min(1) @Max(3) int attendees,
+        @Min(2) @Max(245) int attendees,
         @Min(1) Long customerId,
         @Min(1) Long roomId,
         @NotNull(message = "Önskat datum behövs för bokning.")
@@ -15,5 +15,5 @@ public record CreateBookingDto(
         @NotNull(message = "Önskad tid behöver anges.")
         LocalTime time,
         Long movieId,// Bokning med film är valbart.
-        @NotBlank boolean privateSpeaker) {
+        boolean privateSpeaker) {
 }

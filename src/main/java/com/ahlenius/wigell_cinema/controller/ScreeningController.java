@@ -15,7 +15,7 @@ public class ScreeningController {
 
     @GetMapping("/screenings?movieId={movieId}&date={YYYY-MM-DD}")
  //   @PreAuthorize("hasRole('USER')")
-    public List<ScreeningResponse> findScreeningsByDate(@PathVariable("movieId") Long movieId, @PathVariable LocalDateTime date) {
+    public List<ScreeningResponse> findScreeningsByDate(@RequestParam Long movieId, @RequestParam LocalDateTime date) {
         return null;
         // Lista föreställningar
     }

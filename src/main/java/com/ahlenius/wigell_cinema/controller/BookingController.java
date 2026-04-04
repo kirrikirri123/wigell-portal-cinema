@@ -27,22 +27,29 @@ public class BookingController {
     public ResponseEntity<BookingResponse> reserveRoom(@RequestBody @Valid CreateBookingDto dto) {
         var saved = service.saveBooking(dto);
         var uriLocation = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(saved.id()).toUri(); // behöver man inte ha toString???
+                .path("/{id}")
+                .buildAndExpand(saved.id())
+                .toUri();
         return ResponseEntity.created(uriLocation).body(saved);
     }
 
-    @PatchMapping("/bookings?customerId={customerId}")
-    public ResponseEntity<BookingResponse> patchBooking(@PathVariable("customerId") @RequestBody PatchBookingDto dto) {
+    @PatchMapping("/bookings/{bookingId}")
+    public ResponseEntity<BookingResponse> patchBooking(@PathVariable Long id, @RequestBody @Valid PatchBookingDto dto) {
         return null;
-        //Uppdatera bokning PATCH /api/v1/bookings/{bookingId} (tillåtna fält: datum, teknisk utrustning) Uppdatera rumsreservering
+        //(tillåtna fält: datum, teknisk utrustning) Uppdatera rumsreservering
     }
 
-    @GetMapping("bookings?customerId={customerId}")
+    @GetMapping("/bookings?customerId={customerId}")
     // @PreAuthorize("hasRole('USER')")
-    public List<BookingResponse> findBookingsByCustomerId(@PathVariable("customerId") Long customerId) {
-        //Se tidigare och aktiva bokningar GET /api/v1/bookings?customerId={customerId}
-        return null;
+    public List<BookingResponse> findBookingsByCustomerId(@RequestParam Long customerId) {
+         return service.findBookingsByCustomerId(customerId);
     }
 
+    // Extra metod för egen testnings skull.
+    @GetMapping("/bookings")
+    // @PreAuthorize("hasRole('USER')")
+    public List<BookingResponse> findAllBookings() {
+        return service.findALlBookings();
+    }
 
 }

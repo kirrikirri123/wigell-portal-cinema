@@ -2,7 +2,7 @@ package com.ahlenius.wigell_cinema.service;
 
 import com.ahlenius.wigell_cinema.dto.customerDto.*;
 import com.ahlenius.wigell_cinema.exception.NoMatchingAddressIdException;
-import com.ahlenius.wigell_cinema.exception.NoSuchMemberFoundException;
+import com.ahlenius.wigell_cinema.exception.NoCustomerFoundException;
 import com.ahlenius.wigell_cinema.mapper.CustomerMapper;
 import com.ahlenius.wigell_cinema.model.Address;
 import com.ahlenius.wigell_cinema.model.Customer;
@@ -42,7 +42,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public CustomerResponse updateCustomer(Long id, UpdateCustomerDto dto) {
-        Customer found = repo.findById(id).orElseThrow(() -> new NoSuchMemberFoundException("Hittade ingen matchande kund med id: " + id));
+        Customer found = repo.findById(id).orElseThrow(() -> new NoCustomerFoundException("Hittade ingen matchande kund med id: " + id));
         Customer updated = CustomerMapper.applyUpdate(found, dto);
         return CustomerMapper.toDto(repo.save(updated));
     }
@@ -51,14 +51,14 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     public void deleteCustomer(Long id) {
         if (!repo.existsById(id)) {
-            throw new NoSuchMemberFoundException("Hittade ingen matchande kund med id: " + id);
+            throw new NoCustomerFoundException("Hittade ingen matchande kund med id: " + id);
         }
         repo.deleteById(id);
     }
     @Override
     @Transactional
     public AddressResponse addAddressToCostumerId(Long id, CreateAddressDto dto) {
-        Customer found = repo.findById(id).orElseThrow(() -> new NoSuchMemberFoundException("Hittade ingen matchande kund med id: " + id));
+        Customer found = repo.findById(id).orElseThrow(() -> new NoCustomerFoundException("Hittade ingen matchande kund med id: " + id));
         Address address = CustomerMapper.toAddressEntity(dto);
         address.setCustomer(found);
         addressRepo.save(address);
@@ -69,7 +69,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public void deleteAddressByCustomerId(Long customerId, Long addressId) {
-        Customer found = repo.findById(customerId).orElseThrow(() -> new NoSuchMemberFoundException("Hittade ingen matchande kund med id: " + customerId));
+        Customer found = repo.findById(customerId).orElseThrow(() -> new NoCustomerFoundException("Hittade ingen matchande kund med id: " + customerId));
         Address address = found.getAddressList().stream().filter(a -> a.getId().equals(addressId))
                         .findFirst().orElseThrow(() -> new NoMatchingAddressIdException("Ingen adress med id: " + addressId + " hos kund med id: " + customerId));
         addressRepo.delete(address);

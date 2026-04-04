@@ -10,5 +10,5 @@ public interface BookingService {
     BookingResponse saveBooking(CreateBookingDto dto);
     BookingResponse patchBooking(Long id, PatchBookingDto dto);
     List<BookingResponse> findBookingsByCustomerId(Long id);
-
+    List<BookingResponse> findALlBookings();
 }
