@@ -2,6 +2,9 @@ package com.ahlenius.wigell_cinema.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name="movie")
 public class Movie {
@@ -18,6 +21,9 @@ public class Movie {
     @Column(length = 7, nullable = false)
     @Enumerated(EnumType.STRING)
     private AgeLimit ageLimit;
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Booking> bookingList= new ArrayList<>();
+
 
     public Movie(String title, Genre genre, int durationMin, AgeLimit ageLimit) {
         this.title = title;
@@ -26,6 +32,11 @@ public class Movie {
         this.ageLimit = ageLimit;
     }
     protected Movie() {
+    }
+
+    public void addBooking(Booking booking) {
+        bookingList.add(booking);
+        booking.setMovie(this);
     }
 
     public Long getId() {

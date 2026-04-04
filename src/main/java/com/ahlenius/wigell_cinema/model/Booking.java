@@ -16,12 +16,12 @@ public class Booking {
     @JoinColumn(name= "customer_id")
     private Customer customer;
     private int attendees;
-    @OneToOne(cascade = CascadeType.ALL)  //En bokning ett rum, behöver rummet veta om bokningen?
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name= "room_id")
     private Room room;
     private LocalDate date;
     private LocalTime time;
-    @OneToOne(cascade = CascadeType.ALL) // Lägg in en NoShow i databasen?
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="movie_id")
     private Movie movie;
     @Column(nullable = false)
@@ -32,24 +32,31 @@ public class Booking {
     private double totalPriceUSD; // sett detta med hjälp av converterfunction.
 
     protected Booking() {}
+ // test ! Sätter via hjälpmetoder efteråt mapping?
+    public Booking(int attendees, LocalDate date, LocalTime time, boolean privateSpeaker) {
+        this.attendees = attendees;
+        this.date = date;
+        this.time = time;
+        this.privateSpeaker = privateSpeaker;
+    }
 
-    public Booking(int attendees, Room room, LocalDate date, LocalTime time, Movie movie, boolean privateSpeaker, double totalPriceSEK, double totalPriceUSD) {
+    // sätter pris efteråt!
+    public Booking(Customer customer, int attendees, Room room, LocalDate date, LocalTime time, Movie movie, boolean privateSpeaker) {
+        this.customer = customer;
         this.attendees = attendees;
         this.room = room;
         this.date = date;
         this.time = time;
         this.movie = movie;
         this.privateSpeaker = privateSpeaker;
-        this.totalPriceSEK = totalPriceSEK;
-        this.totalPriceUSD = totalPriceUSD;
     }
-
-    public Booking(int attendees, Room room, LocalDate date,LocalTime time, Movie movie, boolean privateSpeaker) {
+ //konstruktor utan movie pga. kanske bara har en egen talare.
+    public Booking(Customer customer, int attendees, Room room, LocalDate date, LocalTime time, boolean privateSpeaker) {
+        this.customer = customer;
         this.attendees = attendees;
         this.room = room;
         this.date = date;
         this.time = time;
-        this.movie = movie;
         this.privateSpeaker = privateSpeaker;
     }
 
@@ -126,4 +133,6 @@ public class Booking {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+
+
 }

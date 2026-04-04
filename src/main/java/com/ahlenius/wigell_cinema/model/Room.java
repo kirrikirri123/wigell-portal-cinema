@@ -2,6 +2,9 @@ package com.ahlenius.wigell_cinema.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "room")
 public class Room {
@@ -14,6 +17,9 @@ public class Room {
     private int maxGuest;
     @Column(length = 75)
     private String equipment; // enum?
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Booking> bookingList= new ArrayList<>();
+
 
     protected Room() {
     }
@@ -22,6 +28,10 @@ public class Room {
         this.name = name;
         this.maxGuest = maxGuest;
         this.equipment = equipment;
+    }
+    public void addBooking(Booking booking) {
+        bookingList.add(booking);
+        booking.setRoom(this);
     }
 
     public Long getId() {
