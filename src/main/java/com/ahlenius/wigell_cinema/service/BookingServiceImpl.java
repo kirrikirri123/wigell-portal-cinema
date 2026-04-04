@@ -2,9 +2,7 @@ package com.ahlenius.wigell_cinema.service;
 
 import com.ahlenius.wigell_cinema.dto.bookingDto.BookingResponse;
 import com.ahlenius.wigell_cinema.dto.bookingDto.PatchBookingDto;
-import com.ahlenius.wigell_cinema.dto.bookingDto.ReserveBookingDto;
-import com.ahlenius.wigell_cinema.mapper.BookingMapper;
-import com.ahlenius.wigell_cinema.model.Booking;
+import com.ahlenius.wigell_cinema.dto.bookingDto.CreateBookingDto;
 import com.ahlenius.wigell_cinema.repository.BookingRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +12,7 @@ import java.util.List;
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository repo;
+    //private final WebClient webClient;
 
     public BookingServiceImpl(BookingRepository repo) {
         this.repo = repo;
@@ -22,8 +21,8 @@ public class BookingServiceImpl implements BookingService {
     //int attendees, Room room, LocalDate date,LocalTime time, Movie movie, boolean privateSpeaker
 
     @Override
-    public BookingResponse saveBooking(ReserveBookingDto dto) {
-        
+    public BookingResponse saveBooking(CreateBookingDto dto) {
+
          repo.save();
         return null;
     }

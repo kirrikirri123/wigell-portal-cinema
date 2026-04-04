@@ -1,7 +1,7 @@
 package com.ahlenius.wigell_cinema.controller;
 import com.ahlenius.wigell_cinema.dto.bookingDto.BookingResponse;
 import com.ahlenius.wigell_cinema.dto.bookingDto.PatchBookingDto;
-import com.ahlenius.wigell_cinema.dto.bookingDto.ReserveBookingDto;
+import com.ahlenius.wigell_cinema.dto.bookingDto.CreateBookingDto;
 import com.ahlenius.wigell_cinema.service.BookingService;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,7 +21,7 @@ public class BookingController {
 
     @PostMapping("/bookings")
   //  @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<BookingResponse> reserveRoom(@RequestBody ReserveBookingDto dto) {
+    public ResponseEntity<BookingResponse> reserveRoom(@RequestBody CreateBookingDto dto) {
         // Reservera lokal
         return null;
     }

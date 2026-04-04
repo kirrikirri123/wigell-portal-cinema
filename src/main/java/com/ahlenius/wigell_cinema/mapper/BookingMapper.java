@@ -1,7 +1,7 @@
 package com.ahlenius.wigell_cinema.mapper;
 
 import com.ahlenius.wigell_cinema.dto.bookingDto.BookingResponse;
-import com.ahlenius.wigell_cinema.dto.bookingDto.ReserveBookingDto;
+import com.ahlenius.wigell_cinema.dto.bookingDto.CreateBookingDto;
 import com.ahlenius.wigell_cinema.model.Booking;
 
 
@@ -23,7 +23,7 @@ public class BookingMapper {
                 b.getTotalPriceUSD());
     }
 
-    public static Booking toEntity(ReserveBookingDto dto) {
+    public static Booking toEntity(CreateBookingDto dto) {
         return new Booking(dto.attendees(),
                 dto.customerId(),
                 dto.roomId(),

@@ -1,6 +1,10 @@
 server:
   port: 8583
 
+converter:
+  service:
+    url: http//localhost:8587
+
 spring:
   application:
     name: wigell-cinema
@@ -9,6 +13,9 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8081/realms
+  threads:
+    virtual:
+      enabled: true # ger restclient linkande non blocking funktion som webclient. Ska den vara här eller i converter??
   boot:
     admin:
       client:
@@ -31,6 +38,7 @@ spring:
       properties:
         hibernate:
           format_sql: true
+
 
 management:
   server:

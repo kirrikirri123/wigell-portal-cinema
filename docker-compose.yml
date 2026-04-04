@@ -1,7 +1,7 @@
 services:
   mysql:
     image: mysql:8.0
-    container_name: my-mysql # Skapas en temporär databas här inne i containern.
+    container_name: mysql-cinema-container # Skapas en temporär databas här inne i containern.
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -28,7 +28,15 @@ services:
     ports:
       - "8090:8080"
     depends_on:
-      - mysql  #Den här containern startar inte innan mysql containern startar.
+      - mysql  #Den här 'keykcloak-cont' containern startar inte innan mysql containern startar.
 
-volumes:
-  mysql_data:
+  currency-converter:
+    build: ./converter #varför detta? vad betyder det här?
+    ports:
+      - "8587:8587"
+
+  wigell-cinema:
+    build: ./wigell-cinema
+    ports:
+      - "8583:8583"  # hur funkar det med portarna??
+
