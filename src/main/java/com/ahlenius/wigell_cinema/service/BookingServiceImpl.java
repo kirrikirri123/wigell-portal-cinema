@@ -3,7 +3,18 @@ package com.ahlenius.wigell_cinema.service;
 import com.ahlenius.wigell_cinema.dto.bookingDto.BookingResponse;
 import com.ahlenius.wigell_cinema.dto.bookingDto.PatchBookingDto;
 import com.ahlenius.wigell_cinema.dto.bookingDto.CreateBookingDto;
+import com.ahlenius.wigell_cinema.exception.NoMovieFoundException;
+import com.ahlenius.wigell_cinema.exception.NoRoomFoundException;
+import com.ahlenius.wigell_cinema.exception.NoSuchMemberFoundException;
+import com.ahlenius.wigell_cinema.mapper.BookingMapper;
+import com.ahlenius.wigell_cinema.model.Booking;
+import com.ahlenius.wigell_cinema.model.Customer;
+import com.ahlenius.wigell_cinema.model.Movie;
+import com.ahlenius.wigell_cinema.model.Room;
 import com.ahlenius.wigell_cinema.repository.BookingRepository;
+import com.ahlenius.wigell_cinema.repository.CustomerRepository;
+import com.ahlenius.wigell_cinema.repository.MovieRepository;
+import com.ahlenius.wigell_cinema.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,20 +22,37 @@ import java.util.List;
 @Service
 public class BookingServiceImpl implements BookingService {
 
-    private final BookingRepository repo;
+    private final BookingRepository bRepo;
+    private final CustomerRepository cRepo;
+    private final MovieRepository mRepo;
+    private final RoomRepository rRepo;
     //private final WebClient webClient;
 
-    public BookingServiceImpl(BookingRepository repo) {
-        this.repo = repo;
+    public BookingServiceImpl(BookingRepository bRepo, CustomerRepository cRepo, MovieRepository mRepo, RoomRepository rRepo) {
+        this.bRepo = bRepo;
+        this.cRepo = cRepo;
+        this.mRepo = mRepo;
+        this.rRepo = rRepo;
     }
-
-    //int attendees, Room room, LocalDate date,LocalTime time, Movie movie, boolean privateSpeaker
 
     @Override
     public BookingResponse saveBooking(CreateBookingDto dto) {
+        // Plocka ur objekt
+        Customer customer = cRepo.findById(dto.customerId()).orElseThrow(() -> new NoSuchMemberFoundException("Ingen matchande kund hittades."));
+        Room room = rRepo.findById(dto.roomId()).orElseThrow(() -> new NoRoomFoundException("Inget matchande rum hittades."));
+        Movie movie = mRepo.findById(dto.movieId()).orElseThrow(() -> new NoMovieFoundException("Ingen matchande film hittades."));
+        //skapa booking entitet
+        Booking booking = BookingMapper.toEntity(dto);
+        customer.addBooking(booking);
+        room.addBooking(booking);
+        movie.addBooking(booking);
 
-         repo.save();
-        return null;
+        booking.setTotalPriceSEK(1);
+        booking.setTotalPriceUSD(2);
+
+        bRepo.save(booking);
+              BookingResponse response = BookingMapper.toDto(booking);
+        return response;
     }
 
     @Override
@@ -38,3 +66,5 @@ public class BookingServiceImpl implements BookingService {
         return List.of();
     }
 }
+
+

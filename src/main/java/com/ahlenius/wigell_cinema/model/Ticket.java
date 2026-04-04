@@ -19,6 +19,9 @@ public class Ticket {
     private BigDecimal totalPriceSEK; // sett detta utifrån attendees och movie/privateSpeeker
     @Column(name= "total_price_USD",length = 15, nullable = false) // alltid samma pris
     private BigDecimal totalPriceUSD; // sett detta med hjälp av converterfunction.
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name= "customer_id")
+    private Customer customer;
 
     protected Ticket() {}
 
@@ -56,5 +59,12 @@ public class Ticket {
 
     public void setTicketNr(String ticketNr) {
         this.ticketNr = ticketNr;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+    public Customer getCustomer() {
+        return customer;
     }
 }
