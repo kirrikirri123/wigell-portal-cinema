@@ -23,7 +23,7 @@ public class ApiExceptionHandler {
                 ));
     }
     @ExceptionHandler(NoMatchingAddressIdException.class)
-    public ResponseEntity<?> NoMatch(NoMatchingAddressIdException e) {
+    public ResponseEntity<?> NoFound(NoMatchingAddressIdException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 Map.of(
                         "timestamp", LocalDateTime.now().toString(),
@@ -52,4 +52,27 @@ public class ApiExceptionHandler {
                         "message", e.getMessage()
                 ));
     }
+
+    @ExceptionHandler(NoBookingFoundException.class)
+    public ResponseEntity<?> NotFound(NoBookingFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                Map.of(
+                        "timestamp", LocalDateTime.now().toString(),
+                        "status", (HttpStatus.NOT_FOUND.value()),
+                        "error", "No bookning found",
+                        "message", e.getMessage()
+                ));
+    }
+
+    @ExceptionHandler(NoValidInputException.class)
+    public ResponseEntity<?> BadInput(NoValidInputException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                Map.of(
+                        "timestamp", LocalDateTime.now().toString(),
+                        "status", (HttpStatus.BAD_REQUEST.value()),
+                        "error", "Input invalid, no change done",
+                        "message", e.getMessage()
+                ));
+    }
+
 }

@@ -34,9 +34,11 @@ public class BookingController {
     }
 
     @PatchMapping("/bookings/{bookingId}")
-    public ResponseEntity<BookingResponse> patchBooking(@PathVariable Long id, @RequestBody @Valid PatchBookingDto dto) {
-        return null;
-        //(tillåtna fält: datum, teknisk utrustning) Uppdatera rumsreservering
+    public ResponseEntity<BookingResponse> patchBooking(@PathVariable("bookingId") Long id, @RequestBody @Valid PatchBookingDto dto) {
+        BookingResponse response = service.patchBooking(id, dto);
+        return ResponseEntity.ok(response);
+        //(tillåtna fält: datum, teknisk utrustning) Uppdatera rumsreservering- teknisk utrustning finns i rum. Kund får kolla rums spec innan bokning.
+
     }
 
     @GetMapping("/bookings?customerId={customerId}")
