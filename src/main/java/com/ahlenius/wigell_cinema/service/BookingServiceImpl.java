@@ -3,9 +3,7 @@ package com.ahlenius.wigell_cinema.service;
 import com.ahlenius.wigell_cinema.dto.bookingDto.BookingResponse;
 import com.ahlenius.wigell_cinema.dto.bookingDto.PatchBookingDto;
 import com.ahlenius.wigell_cinema.dto.bookingDto.CreateBookingDto;
-import com.ahlenius.wigell_cinema.exception.NoMovieFoundException;
-import com.ahlenius.wigell_cinema.exception.NoRoomFoundException;
-import com.ahlenius.wigell_cinema.exception.NoCustomerFoundException;
+import com.ahlenius.wigell_cinema.exception.*;
 import com.ahlenius.wigell_cinema.mapper.BookingMapper;
 import com.ahlenius.wigell_cinema.model.Booking;
 import com.ahlenius.wigell_cinema.model.Customer;
@@ -15,6 +13,7 @@ import com.ahlenius.wigell_cinema.repository.BookingRepository;
 import com.ahlenius.wigell_cinema.repository.CustomerRepository;
 import com.ahlenius.wigell_cinema.repository.MovieRepository;
 import com.ahlenius.wigell_cinema.repository.RoomRepository;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,8 +56,12 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingResponse patchBooking(Long id, PatchBookingDto dto) {
-
-        return null;
+        Booking booking = bRepo.findById(id).orElseThrow(()-> new NoBookingFoundException("Ingen matchande bokning hittad."));
+        if (dto.date() != null) booking.setDate(dto.date());
+        if (dto.time() != null) booking.setTime(dto.time());
+        if(dto.date() == null && dto.time()== null){throw new NoValidInputException("Ingen förändring gjord.");}
+        bRepo.save(booking);
+        return BookingMapper.toDto(booking);
     }
 
     @Override
