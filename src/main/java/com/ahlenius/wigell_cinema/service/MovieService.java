@@ -31,7 +31,7 @@ public class MovieService {
 
     @Transactional
     public MovieResponse saveMovie(CreateMovieDto dto) {
-        Movie movie = repo.save(MovieMapper.toEntity(dto));
+        var movie = repo.save(MovieMapper.toEntity(dto));
         return MovieMapper.toDto(movie);
     }
 
@@ -45,7 +45,7 @@ public class MovieService {
 
     @Transactional
     public MovieResponse findMovieById(Long id) {
-        Movie movie = repo.findById(id).orElseThrow(()->new NoMovieFoundException("Hittade ingen film med id: " + id));
+        var movie = repo.findById(id).orElseThrow(()->new NoMovieFoundException("Hittade ingen film med id: " + id));
         return MovieMapper.toDto(movie);
            }
 

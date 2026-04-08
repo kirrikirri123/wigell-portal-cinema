@@ -37,9 +37,9 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingResponse saveBooking(CreateBookingDto dto) {
         // Plocka ur objekt
-        Customer customer = cRepo.findById(dto.customerId()).orElseThrow(() -> new NoCustomerFoundException("Ingen matchande kund hittades."));
-        Room room = rRepo.findById(dto.roomId()).orElseThrow(() -> new NoRoomFoundException("Inget matchande rum hittades."));
-        Movie movie = mRepo.findById(dto.movieId()).orElseThrow(() -> new NoMovieFoundException("Ingen matchande film hittades."));
+        var customer = cRepo.findById(dto.customerId()).orElseThrow(() -> new NoCustomerFoundException("Ingen matchande kund hittades."));
+        var room = rRepo.findById(dto.roomId()).orElseThrow(() -> new NoRoomFoundException("Inget matchande rum hittades."));
+        var movie = mRepo.findById(dto.movieId()).orElseThrow(() -> new NoMovieFoundException("Ingen matchande film hittades."));
         //skapa booking entitet
         Booking booking = BookingMapper.toEntity(dto);
         customer.addBooking(booking);
@@ -56,7 +56,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingResponse patchBooking(Long id, PatchBookingDto dto) {
-        Booking booking = bRepo.findById(id).orElseThrow(()-> new NoBookingFoundException("Ingen matchande bokning hittad."));
+        var booking = bRepo.findById(id).orElseThrow(()-> new NoBookingFoundException("Ingen matchande bokning hittad.")); //
         if (dto.date() != null) booking.setDate(dto.date());
         if (dto.time() != null) booking.setTime(dto.time());
         if(dto.date() == null && dto.time()== null){throw new NoValidInputException("Ingen förändring gjord.");}
@@ -66,7 +66,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingResponse> findBookingsByCustomerId(Long id) { //FUNKAR INTE ! Hämtar oberoende av id!
-        Customer c = cRepo.findById(id).orElseThrow(() -> new NoCustomerFoundException("Ingen matchande kund hittades."));
+        var c = cRepo.findById(id).orElseThrow(() -> new NoCustomerFoundException("Ingen matchande kund hittades."));
         return c.getBookingList().stream()
                 .map(BookingMapper::toDto)
                 .toList();

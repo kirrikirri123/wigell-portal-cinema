@@ -5,15 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.LocalDateTime;
-import java.util.Map;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
     @ExceptionHandler(ParentExceptionClass.class) // 'allt' som kommer via runtime
     public ResponseEntity<ErrorResponse> handleExceptions(ParentExceptionClass e) {
-        return ResponseEntity.status(e.getStatus()).body(ErrorResponse.of(e.getStatus(),e.getError(),e.getMessage()));
+        return ResponseEntity.status(e.getStatus()).body(ErrorResponse.of(e.getStatus(), e.getError(), e.getMessage()));
     }
 
     @ExceptionHandler(Exception.class) // det som kommer som exception, oväntade fel.
