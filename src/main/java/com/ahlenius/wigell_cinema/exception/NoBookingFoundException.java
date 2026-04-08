@@ -1,7 +1,9 @@
 package com.ahlenius.wigell_cinema.exception;
 
-public class NoBookingFoundException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class NoBookingFoundException extends ParentExceptionClass {
     public NoBookingFoundException(String message) {
-        super(message);
+         super(message, HttpStatus.NOT_FOUND,"No booking found");
     }
 }

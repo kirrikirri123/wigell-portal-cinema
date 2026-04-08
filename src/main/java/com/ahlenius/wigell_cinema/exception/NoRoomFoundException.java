@@ -1,7 +1,9 @@
 package com.ahlenius.wigell_cinema.exception;
 
-public class NoRoomFoundException extends RuntimeException {
-    public NoRoomFoundException(String message) {
-        super(message);
+import org.springframework.http.HttpStatus;
+
+public class NoRoomFoundException extends ParentExceptionClass {
+    public NoRoomFoundException (String message) {
+        super(message, HttpStatus.NO_CONTENT,"No value to return");
     }
 }

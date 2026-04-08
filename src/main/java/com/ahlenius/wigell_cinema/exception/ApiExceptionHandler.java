@@ -11,68 +11,18 @@ import java.util.Map;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
-
-    @ExceptionHandler(NoCustomerFoundException.class)
-    public ResponseEntity<?> NotFound(NoCustomerFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                Map.of(
-                        "timestamp", LocalDateTime.now().toString(),
-                        "status", (HttpStatus.NOT_FOUND.value()),
-                        "error", "No customer found",
-                        "message", e.getMessage()
-                ));
-    }
-    @ExceptionHandler(NoMatchingAddressIdException.class)
-    public ResponseEntity<?> NoFound(NoMatchingAddressIdException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                Map.of(
-                        "timestamp", LocalDateTime.now().toString(),
-                        "status", (HttpStatus.NOT_FOUND.value()),
-                        "error", "No matching address id",
-                        "message", e.getMessage()
-                ));
-    }
-    @ExceptionHandler(ResponseIsNullException.class)
-    public ResponseEntity<?> Null(ResponseIsNullException e) {
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
-                Map.of(
-                        "timestamp", LocalDateTime.now().toString(),
-                        "status", (HttpStatus.NO_CONTENT.value()),
-                        "error", "No value to return",
-                        "message", e.getMessage()
-                ));
-    }
-    @ExceptionHandler(NoMovieFoundException.class)
-    public ResponseEntity<?> NotFound(NoMovieFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                Map.of(
-                        "timestamp", LocalDateTime.now().toString(),
-                        "status", (HttpStatus.NOT_FOUND.value()),
-                        "error", "No movie found",
-                        "message", e.getMessage()
-                ));
+    @ExceptionHandler(ParentExceptionClass.class) // 'allt' som kommer via runtime
+    public ResponseEntity<ErrorResponse> handleExceptions(ParentExceptionClass e) {
+        return ResponseEntity.status(e.getStatus()).body(ErrorResponse.of(e.getStatus(),e.getError(),e.getMessage()));
     }
 
-    @ExceptionHandler(NoBookingFoundException.class)
-    public ResponseEntity<?> NotFound(NoBookingFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                Map.of(
-                        "timestamp", LocalDateTime.now().toString(),
-                        "status", (HttpStatus.NOT_FOUND.value()),
-                        "error", "No bookning found",
-                        "message", e.getMessage()
-                ));
+    @ExceptionHandler(Exception.class) // det som kommer som exception, oväntade fel.
+    public ResponseEntity<ErrorResponse> handleExceptions(Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR,
+                        e.getMessage(), // vilka meddelanden kommer ut? vad vill man skydda/ förklara annars?
+                        e.getMessage())); // vilka meddelanden kommer ut? vad vill man skydda/ förklara annars?
     }
 
-    @ExceptionHandler(NoValidInputException.class)
-    public ResponseEntity<?> BadInput(NoValidInputException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                Map.of(
-                        "timestamp", LocalDateTime.now().toString(),
-                        "status", (HttpStatus.BAD_REQUEST.value()),
-                        "error", "Input invalid, no change done",
-                        "message", e.getMessage()
-                ));
-    }
 
 }

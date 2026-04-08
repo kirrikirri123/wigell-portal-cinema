@@ -65,7 +65,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingResponse> findBookingsByCustomerId(Long id) { //detta är nog ingen bra lösning, när man ändå har param??
+    public List<BookingResponse> findBookingsByCustomerId(Long id) { //FUNKAR INTE ! Hämtar oberoende av id!
         Customer c = cRepo.findById(id).orElseThrow(() -> new NoCustomerFoundException("Ingen matchande kund hittades."));
         return c.getBookingList().stream()
                 .map(BookingMapper::toDto)
