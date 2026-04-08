@@ -1,7 +1,9 @@
 package com.ahlenius.wigell_cinema.exception;
 
-public class NoMatchingAddressIdException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class NoMatchingAddressIdException extends ParentExceptionClass {
     public NoMatchingAddressIdException(String message) {
-        super(message);
+        super(message, HttpStatus.NOT_FOUND,"No matching address id");
     }
 }

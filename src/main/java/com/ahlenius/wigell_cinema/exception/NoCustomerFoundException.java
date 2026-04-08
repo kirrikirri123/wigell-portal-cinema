@@ -1,7 +1,9 @@
 package com.ahlenius.wigell_cinema.exception;
 
-public class NoCustomerFoundException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class NoCustomerFoundException extends ParentExceptionClass {
     public NoCustomerFoundException(String message) {
-        super(message);
+        super(message, HttpStatus.NOT_FOUND,"No customer found");
     }
 }
