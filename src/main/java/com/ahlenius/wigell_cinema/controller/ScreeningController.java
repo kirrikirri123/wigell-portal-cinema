@@ -2,6 +2,7 @@ package com.ahlenius.wigell_cinema.controller;
 
 import com.ahlenius.wigell_cinema.dto.screeningDto.CreateScreeningDto;
 import com.ahlenius.wigell_cinema.dto.screeningDto.ScreeningResponse;
+import com.ahlenius.wigell_cinema.service.ScreeningService;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +14,16 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class ScreeningController {
 
+    private final ScreeningService service;
+
+    public ScreeningController(ScreeningService service) {
+        this.service = service;
+    }
+
     @GetMapping("/screenings?movieId={movieId}&date={YYYY-MM-DD}")
  //   @PreAuthorize("hasRole('USER')")
     public List<ScreeningResponse> findScreeningsByDate(@RequestParam Long movieId, @RequestParam LocalDateTime date) {
+
         return null;
         // Lista föreställningar
     }
@@ -23,6 +31,8 @@ public class ScreeningController {
     @GetMapping("/screening")
   //  @PreAuthorize("hasRole('ADMIN')")
     public List<ScreeningResponse> findAllScreenings() {
+        service.findAllScreenings();
+
         return null;
         //Lista föreställningar GET /api/v1/screenings
     }

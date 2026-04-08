@@ -8,10 +8,10 @@ public class Screening {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = false) // varje screening måste ha en film men en movie behöver inte ha en screening.
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="movie_id")
     private Movie movie;
-    @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = false) // behöver rummet veta att det har en screening?
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="room_id")
     private Room room;
     private LocalDateTime dateTime;
@@ -23,6 +23,11 @@ public class Screening {
         this.room = room;
         this.dateTime = dateTime;
     }
+//movie och room sätts genom hjälp metoder?
+    public Screening(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
     public Long getId() {
         return id; }
 

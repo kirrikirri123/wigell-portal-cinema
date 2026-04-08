@@ -23,6 +23,8 @@ public class Movie {
     private AgeLimit ageLimit;
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Booking> bookingList= new ArrayList<>();
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Screening> screeningList= new ArrayList<>();
 
 
     public Movie(String title, Genre genre, int durationMin, AgeLimit ageLimit) {
@@ -37,6 +39,10 @@ public class Movie {
     public void addBooking(Booking booking) {
         bookingList.add(booking);
         booking.setMovie(this);
+    }
+    public void addScreening(Screening screening) {
+        screeningList.add(screening);
+        screening.setMovie(this);
     }
 
     public Long getId() {
@@ -73,5 +79,13 @@ public class Movie {
 
     public void setAgeLimit(AgeLimit ageLimit) {
         this.ageLimit = ageLimit;
+    }
+
+    public List<Screening> getScreeningList() {
+        return screeningList;
+    }
+
+    public List<Booking> getBookingList() {
+        return bookingList;
     }
 }
