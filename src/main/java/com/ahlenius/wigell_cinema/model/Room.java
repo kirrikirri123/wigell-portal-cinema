@@ -13,12 +13,14 @@ public class Room {
     private Long id;
     @Column(unique = true, length = 25)
     private String name;
-    @Column(name = "max_guest",length = 3, nullable = false)
+    @Column(name = "max_guest", length = 3, nullable = false)
     private int maxGuest;
     @Column(length = 75)
     private String equipment; // enum?
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Booking> bookingList= new ArrayList<>();
+    @OneToMany(mappedBy = "room", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Booking> bookingList = new ArrayList<>();
+    @OneToMany(mappedBy = "room", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Screening> screeningList = new ArrayList<>();
 
 
     protected Room() {
@@ -29,9 +31,15 @@ public class Room {
         this.maxGuest = maxGuest;
         this.equipment = equipment;
     }
+
     public void addBooking(Booking booking) {
         bookingList.add(booking);
         booking.setRoom(this);
+    }
+
+    public void addScreening(Screening screening) {
+        screeningList.add(screening);
+        screening.setRoom(this);
     }
 
     public Long getId() {
@@ -60,6 +68,14 @@ public class Room {
 
     public void setEquipment(String equipment) {
         this.equipment = equipment;
+    }
+
+    public List<Screening> getScreeningList() {
+        return screeningList;
+    }
+
+    public List<Booking> getBookingList() {
+        return bookingList;
     }
 }
 

@@ -12,7 +12,7 @@ public class Ticket {
     private Long id;
     @Column(unique = true, length = 100)
     private String ticketNr = UUID.randomUUID().toString();
-    @OneToOne(fetch = FetchType.LAZY) // osäker på realtionen.
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="screening_id")
     private Screening screening;
     @Column(name = "total_price_SEK",length = 15, nullable = false) // alltid samma pris

@@ -13,7 +13,7 @@ public class Address {
     private String zipcode;
     @Column(length = 15, nullable = false)
     private String city;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
