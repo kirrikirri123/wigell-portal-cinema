@@ -1,15 +1,13 @@
 package com.ahlenius.wigell_cinema.config;
 import com.ahlenius.wigell_cinema.model.*;
-import com.ahlenius.wigell_cinema.repository.BookingRepository;
-import com.ahlenius.wigell_cinema.repository.CustomerRepository;
-import com.ahlenius.wigell_cinema.repository.MovieRepository;
-import com.ahlenius.wigell_cinema.repository.RoomRepository;
+import com.ahlenius.wigell_cinema.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.Clock;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -19,11 +17,9 @@ public class DataLoader {
 // 5 kunder, 5 filmer, två bokningar och 3 lokaler
 
     @Bean
-    public CommandLineRunner initDatabase(CustomerRepository custRepo, MovieRepository movieRepo, RoomRepository roomRepo, BookingRepository bookingRepo) {
+    public CommandLineRunner initDatabase(CustomerRepository custRepo, MovieRepository movieRepo, RoomRepository roomRepo, BookingRepository bookingRepo, ScreeningRepository screenRepo) {
         return args -> {
-
-
-                   Customer c1 = new Customer("Kalle", "Karlsson", "k_karlsson@mail.com", "0701111111", "kalleskundnamn");
+            Customer c1 = new Customer("Kalle", "Karlsson", "k_karlsson@mail.com", "0701111111", "kalleskundnamn");
             List<Customer> testCustomers = List.of(
                     new Customer("Olle", "Olsson", "o_lsson@mail.com", "070222222", "olleskundnamn"),
                     new Customer("Pelle", "Persson", "p_persson@mail.com", "0703333333", "pelleskundnamn"),
@@ -41,7 +37,6 @@ public class DataLoader {
 
             );
             movieRepo.save(m1);
-
 
                     Room r1 = new Room("Krokodilens mun", 35, "Ljud,Bild");
             List<Room> testRooms = List.of(
@@ -62,7 +57,13 @@ public class DataLoader {
                                 );
             bookingRepo.saveAll(testBookings);
 
-            //List<Screening> testScreening = List.of();
+            // Movie movie, Room room, LocalDateTime dateTime
+            List<Screening> testScreening = List.of(
+                new Screening(m1,r1, LocalDate.of(2026,4,15),LocalTime.of(19,30)),
+                new Screening(m1,r1, LocalDate.of(2026,4,15),LocalTime.of(15,0)),
+                new Screening(m1,r1, LocalDate.of(2026,4,15),LocalTime.of(21,0)));
+            screenRepo.saveAll(testScreening);
+
             //List<Ticket> testTickets = List.of();
             //List<Address> testAddresses = List.of();
 

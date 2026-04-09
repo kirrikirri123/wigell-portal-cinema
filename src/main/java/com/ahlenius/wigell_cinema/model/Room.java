@@ -17,9 +17,9 @@ public class Room {
     private int maxGuest;
     @Column(length = 75)
     private String equipment; // enum?
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "room", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Booking> bookingList = new ArrayList<>();
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "room", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Screening> screeningList = new ArrayList<>();
 
 

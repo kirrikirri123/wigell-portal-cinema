@@ -1,6 +1,11 @@
 package com.ahlenius.wigell_cinema.model;
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="screening")
@@ -8,24 +13,50 @@ public class Screening {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="movie_id")
     private Movie movie;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="room_id")
     private Room room;
-    private LocalDateTime dateTime;
+    private LocalDate date;
+    private LocalTime time;
+    @OneToMany(mappedBy = "screening", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Ticket> ticketsList = new ArrayList<>();
 
     public Screening() {}
 
-    public Screening(Movie movie, Room room, LocalDateTime dateTime) {
+    public Screening(Movie movie, Room room, LocalDate date, LocalTime time) {
         this.movie = movie;
         this.room = room;
-        this.dateTime = dateTime;
+        this.date = date;
+        this.time = time;
     }
-//movie och room sätts genom hjälp metoder?
-    public Screening(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+
+    public Screening(LocalDate date, LocalTime time) {
+        this.date = date;
+        this.time = time;
+    }
+
+    public void addTicket(Ticket ticket) {
+        ticketsList.add(ticket);
+        ticket.setScreening(this);
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalTime time) {
+        this.time = time;
     }
 
     public Long getId() {
@@ -43,9 +74,4 @@ public class Screening {
     public void setRoom(Room room) {
         this.room = room;}
 
-    public LocalDateTime getDateTime() {
-        return dateTime;}
-
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;}
 }

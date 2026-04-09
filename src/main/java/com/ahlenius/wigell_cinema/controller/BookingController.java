@@ -38,7 +38,6 @@ public class BookingController {
         BookingResponse response = service.patchBooking(id, dto);
         return ResponseEntity.ok(response);
         //(tillåtna fält: datum, teknisk utrustning) Uppdatera rumsreservering- teknisk utrustning finns i rum. Kund får kolla rums spec innan bokning.
-
     }
 
     @GetMapping("/bookings?customerId={customerId}")

@@ -6,7 +6,9 @@ import com.ahlenius.wigell_cinema.service.ScreeningService;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,32 +22,30 @@ public class ScreeningController {
         this.service = service;
     }
 
-    @GetMapping("/screenings?movieId={movieId}&date={YYYY-MM-DD}")
+    @GetMapping(value = "/screenings", params ={"movieId","date"})
  //   @PreAuthorize("hasRole('USER')")
-    public List<ScreeningResponse> findScreeningsByDate(@RequestParam Long movieId, @RequestParam LocalDateTime date) {
-
-        return null;
-        // Lista föreställningar
+    public List<ScreeningResponse> findScreeningsByDate(@RequestParam Long movieId, @RequestParam LocalDate date) {
+        return service.findAllScreeningsByDate(movieId,date);
     }
-
-    @GetMapping("/screening")
+    @GetMapping("/screenings")
   //  @PreAuthorize("hasRole('ADMIN')")
     public List<ScreeningResponse> findAllScreenings() {
-        service.findAllScreenings();
-
-        return null;
-        //Lista föreställningar GET /api/v1/screenings
+        return service.findAllScreenings();
     }
 
-    @PostMapping("/screening")
+    @PostMapping("/screenings")
   //  @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ScreeningResponse> createScreening(@RequestBody CreateScreeningDto dto) {
-        return null;
+        var saved = service.saveScreening(dto);
+        var uriLocation = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(saved.id()).toUri();
+        return ResponseEntity.created(uriLocation).body(saved);
     }
 
     @DeleteMapping("/screenings/{screeningId}")
    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteScreening(@PathVariable("screeningId") Long id) {
-        return null;
+        service.deleteScreening(id);
+        return ResponseEntity.noContent().build();
     }
 }
