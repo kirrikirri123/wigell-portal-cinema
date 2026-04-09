@@ -1,4 +1,12 @@
 package com.ahlenius.wigell_cinema.dto.ticketDto;
 
-public record CreateTicketDto() {
+
+import jakarta.validation.constraints.NotNull;
+
+public record CreateTicketDto(
+        @NotNull
+        Long screeningId,
+        @NotNull
+        Long customer
+) {
 }

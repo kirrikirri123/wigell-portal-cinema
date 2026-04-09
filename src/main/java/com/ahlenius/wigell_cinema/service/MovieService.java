@@ -26,8 +26,7 @@ public class MovieService {
     public List<MovieResponse> findAll() {
         return repo.findAll().stream()
                 .map(MovieMapper::toDto)
-                .toList();
-    }
+                .toList();}
 
     @Transactional
     public MovieResponse saveMovie(CreateMovieDto dto) {

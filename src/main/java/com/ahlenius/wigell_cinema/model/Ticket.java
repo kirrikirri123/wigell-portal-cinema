@@ -11,7 +11,7 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true, length = 100)
-    private String ticketNr = UUID.randomUUID().toString();
+    private final String ticketNr = UUID.randomUUID().toString();
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="screening_id")
     private Screening screening;
@@ -24,6 +24,11 @@ public class Ticket {
     private Customer customer;
 
     protected Ticket() {}
+
+    public Ticket(Screening screening, Customer customer) {
+        this.screening = screening;
+        this.customer = customer;
+    }
 
     public Ticket(Screening screening) {
         this.screening = screening;
@@ -57,14 +62,14 @@ public class Ticket {
         return ticketNr;
     }
 
-    public void setTicketNr(String ticketNr) {
-        this.ticketNr = ticketNr;
-    }
-
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
     public Customer getCustomer() {
         return customer;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

@@ -11,6 +11,7 @@ import com.ahlenius.wigell_cinema.repository.MovieRepository;
 import com.ahlenius.wigell_cinema.repository.RoomRepository;
 import com.ahlenius.wigell_cinema.repository.ScreeningRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,7 +29,7 @@ public class ScreeningService {
         this.mRepo = mRepo;
         this.rRepo = rRepo;
     }
-
+    @Transactional
     public List<ScreeningResponse> findAllScreeningsByDate(Long movieId, LocalDate date) {
         var movie = mRepo.findById(movieId).orElseThrow(()-> new NoMovieFoundException("Ingen film hittad med id: "+ movieId));
         List <Screening> sList = repo.findByMovieAndDateEquals(movie,date);
@@ -37,13 +38,13 @@ public class ScreeningService {
         return sList.stream()
             .map(ScreeningMapper::toDto)
             .toList();}
-
+    @Transactional
     public List<ScreeningResponse> findAllScreenings() {
         return repo.findAll().stream()
                 .map(ScreeningMapper::toDto)
                 .toList();
     }
-
+    @Transactional
     public ScreeningResponse saveScreening(CreateScreeningDto dto) {
         var room = rRepo.findById(dto.roomId()).orElseThrow(() -> new NoRoomFoundException("Inget matchande rum hittades."));
         var movie = mRepo.findById(dto.movieId()).orElseThrow(() -> new NoMovieFoundException("Ingen matchande film hittades."));
@@ -53,7 +54,7 @@ public class ScreeningService {
 
         return ScreeningMapper.toDto(repo.save(screening));
             }
-
+    @Transactional
     public void deleteScreening(Long id) {
         if(!repo.existsById(id)){
             throw new NoScreeningFoundException("Hittade ingen visning med id: "+ id); }
