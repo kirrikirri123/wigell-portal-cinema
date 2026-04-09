@@ -40,7 +40,7 @@ public class BookingController {
         //(tillåtna fält: datum, teknisk utrustning) Uppdatera rumsreservering- teknisk utrustning finns i rum. Kund får kolla rums spec innan bokning.
     }
 
-    @GetMapping("/bookings?customerId={customerId}")
+    @GetMapping(value= "/bookings", params = {"customerId"})
     // @PreAuthorize("hasRole('USER')")
     public List<BookingResponse> findBookingsByCustomerId(@RequestParam Long customerId) {
          return service.findBookingsByCustomerId(customerId);
