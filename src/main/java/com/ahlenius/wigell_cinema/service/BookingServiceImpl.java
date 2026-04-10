@@ -39,7 +39,8 @@ public class BookingServiceImpl implements BookingService {
         // Plocka ur objekt
         var customer = cRepo.findById(dto.customerId()).orElseThrow(() -> new NoCustomerFoundException("Ingen matchande kund hittades."));
         var room = rRepo.findById(dto.roomId()).orElseThrow(() -> new NoRoomFoundException("Inget matchande rum hittades."));
-        var movie = mRepo.findById(dto.movieId()).orElseThrow(() -> new NoMovieFoundException("Ingen matchande film hittades."));
+
+        var movie = mRepo.findById(dto.movieId()).orElseThrow(() -> new NoMovieFoundException("Ingen matchande film hittades.")); //
         //skapa booking entitet
         Booking booking = BookingMapper.toEntity(dto);
         customer.addBooking(booking);
