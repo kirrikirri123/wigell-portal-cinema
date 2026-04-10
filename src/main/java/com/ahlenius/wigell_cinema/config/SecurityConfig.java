@@ -1,5 +1,8 @@
 package com.ahlenius.wigell_cinema.config;
 /*
+import org.springframework.context.annotation.Bean;
+
+
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,25 +36,27 @@ public class SecurityConfig {
                         .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
-                .build();
-
-
-
+                  .oauth2ResourceServer(oauth2 -> oauth2
+                        .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
+               .build();
     }
-    /*@Bean
-    public Converter<Jwt,? extends AbstractAuthenticationToken> jwtAuthConverter() {
-        return jwt -> {
-            Collection<GrantedAuthority> authorities = new ArrayList<>();
-            Map<String,Object> realmAccess = jwt.getClaimAsMap("realm_access");
-            if(realmAccess != null && realmAccess.get("roles") instanceof Collection<?> rawRoles) {
-                for(Object r :rawRoles){
-                    String role = String.valueOf(r).toUpperCase();
-                    authorities.add(new SimpleGrantedAuthority("ROLE_"+ role));
-                }
-            }
-            return new JwtAuthenticationToken(jwt,authorities);
-        };
-    }*/
 
+    @Bean
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        converter.setJwtGrantedAuthoritiesConverter(jwt -> {
+
+            Map<String, Object> realmAccess = jwt.getClaim("realm_access");
+            if (realmAccess == null || realmAccess.get("roles") == null) {
+                return List.of();
+            }
+            @SuppressWarnings("unchecked")
+            Collection<String> roles = (Collection<String>) realmAccess.get("roles");
+            return roles.stream()
+                    .map(roleName -> new SimpleGrantedAuthority("ROLE_" + roleName))
+                    .collect(Collectors.toList());
+        });
+        return converter;
+    }
+*/
 }

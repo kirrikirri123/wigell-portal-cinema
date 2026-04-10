@@ -7,6 +7,6 @@ public record CreateTicketDto(
         @NotNull
         Long screeningId,
         @NotNull
-        Long customer
+        Long customerId
 ) {
 }

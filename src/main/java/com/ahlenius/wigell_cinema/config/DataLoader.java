@@ -17,7 +17,7 @@ public class DataLoader {
 // 5 kunder, 5 filmer, två bokningar och 3 lokaler
 
     @Bean
-    public CommandLineRunner initDatabase(CustomerRepository custRepo, MovieRepository movieRepo, RoomRepository roomRepo, BookingRepository bookingRepo, ScreeningRepository screenRepo) {
+    public CommandLineRunner initDatabase(CustomerRepository custRepo, MovieRepository movieRepo, RoomRepository roomRepo, BookingRepository bookingRepo, ScreeningRepository screenRepo, TicketRepository ticketRepo) {
         return args -> {
             Customer c1 = new Customer("Kalle", "Karlsson", "k_karlsson@mail.com", "0701111111", "kalleskundnamn");
             List<Customer> testCustomers = List.of(
@@ -57,14 +57,20 @@ public class DataLoader {
                                 );
             bookingRepo.saveAll(testBookings);
 
-            // Movie movie, Room room, LocalDateTime dateTime
+
+            Screening s1= new Screening(m1,r1, LocalDate.of(2026,5,18),LocalTime.of(14,30));
             List<Screening> testScreening = List.of(
                 new Screening(m1,r1, LocalDate.of(2026,4,15),LocalTime.of(19,30)),
                 new Screening(m1,r1, LocalDate.of(2026,4,15),LocalTime.of(15,0)),
                 new Screening(m1,r1, LocalDate.of(2026,4,15),LocalTime.of(21,0)));
+            screenRepo.save(s1);
             screenRepo.saveAll(testScreening);
 
-            //List<Ticket> testTickets = List.of();
+            List<Ticket> testTickets = List.of(
+                    new Ticket(s1,c1)
+            );
+            ticketRepo.saveAll(testTickets);
+
             //List<Address> testAddresses = List.of();
 
         };

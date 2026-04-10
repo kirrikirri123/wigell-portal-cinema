@@ -12,10 +12,18 @@ public class TicketMapper {
     private TicketMapper() {}
 
     public static TicketResponse toDto(Ticket t) {
-        return new TicketResponse(t.getId(),t.getTicketNr(),t.getScreening().getId(), t.getTotalPriceSEK(), t.getTotalPriceUSD(),t.getCustomer().getId());
+        return new TicketResponse(
+                t.getId(),
+                t.getTicketNr(),
+                t.getScreening().getId(),
+                t.getScreening().getMovie().getTitle(),
+                t.getScreening().getTime().toString(),
+                t.getTotalPriceSEK(),
+                t.getTotalPriceUSD(),
+                t.getCustomer().getFirstName());
     }
 
-    public static Ticket toEntity(CreateTicketDto dto, Screening screening, Customer customer) {
+    public static Ticket toEntity(Screening screening, Customer customer) {
          return new Ticket(screening,customer);
     }
 }

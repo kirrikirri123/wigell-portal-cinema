@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1")
 public class CustomerController {
-    // här läggs http statuskoder!
+
     private CustomerService service;
 
     public CustomerController(CustomerService service) {
