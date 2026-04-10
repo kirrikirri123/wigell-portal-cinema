@@ -11,19 +11,26 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true, length = 100)
-    private String ticketNr = UUID.randomUUID().toString();
+    private final String ticketNr = UUID.randomUUID().toString();
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="screening_id")
     private Screening screening;
-    @Column(name = "total_price_SEK",length = 15, nullable = false) // alltid samma pris
-    private BigDecimal totalPriceSEK; // sett detta utifrån attendees och movie/privateSpeeker
-    @Column(name= "total_price_USD",length = 15, nullable = false) // alltid samma pris
+    @Column(name = "total_price_SEK",length = 15, nullable = false)
+    private BigDecimal totalPriceSEK;  // alltid samma pris
+    @Column(name= "total_price_USD",length = 15, nullable = false)
     private BigDecimal totalPriceUSD; // sett detta med hjälp av converterfunction.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name= "customer_id")
     private Customer customer;
 
     protected Ticket() {}
+
+    public Ticket(Screening screening, Customer customer) {
+        this.screening = screening;
+        this.customer = customer;
+        this.totalPriceSEK = BigDecimal.valueOf(85);
+        this.totalPriceUSD = (this.totalPriceSEK).multiply(BigDecimal.valueOf(2));
+    }
 
     public Ticket(Screening screening) {
         this.screening = screening;
@@ -57,14 +64,14 @@ public class Ticket {
         return ticketNr;
     }
 
-    public void setTicketNr(String ticketNr) {
-        this.ticketNr = ticketNr;
-    }
-
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
     public Customer getCustomer() {
         return customer;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

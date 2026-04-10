@@ -3,6 +3,7 @@ package com.ahlenius.wigell_cinema.controller;
 import com.ahlenius.wigell_cinema.dto.screeningDto.CreateScreeningDto;
 import com.ahlenius.wigell_cinema.dto.screeningDto.ScreeningResponse;
 import com.ahlenius.wigell_cinema.service.ScreeningService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class ScreeningController {
 
     @PostMapping("/screenings")
   //  @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ScreeningResponse> createScreening(@RequestBody CreateScreeningDto dto) {
+    public ResponseEntity<ScreeningResponse> createScreening(@RequestBody @Valid CreateScreeningDto dto) {
         var saved = service.saveScreening(dto);
         var uriLocation = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(saved.id()).toUri();
