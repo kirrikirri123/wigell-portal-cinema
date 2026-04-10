@@ -16,8 +16,10 @@ public class BookingMapper {
     public static BookingResponse toDto(Booking b) {
         return new BookingResponse(b.getId(),
                 b.getCustomer().getId(),
+                b.getCustomer().getFirstName()+" "+b.getCustomer().getLastName(),
                 b.getAttendees(),
                 b.getRoom().getId(),
+                b.getRoom().getName(),
                 b.getDate(),
                 b.getTime(),
                 b.getMovie().getId(),

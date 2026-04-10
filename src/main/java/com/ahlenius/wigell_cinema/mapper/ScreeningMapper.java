@@ -15,7 +15,9 @@ public class ScreeningMapper {
         return new ScreeningResponse(
                 s.getId(),
                 s.getMovie().getId(),
+                s.getMovie().getTitle(),
                 s.getRoom().getId(),
+                s.getRoom().getName(),
                 s.getDate(),
                 s.getTime());
     }
