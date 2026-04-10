@@ -7,8 +7,10 @@ import java.time.LocalTime;
 public record BookingResponse(
         Long id,
         Long customerId,
+        String customerName,
         int attendees,
         Long roomId,
+        String roomName,
         LocalDate date,
         LocalTime time,
         Long movieId,
