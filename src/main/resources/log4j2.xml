@@ -1,0 +1,35 @@
+<Configuration status="WARN">
+
+    <Appenders>
+        <!-- Konsoll -->
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+
+        <!-- Rullande fil, en om dagen -->
+        <RollingFile name="FILE"
+                     fileName="logs/app.log"
+                     filePattern="logs/app-%d{yyyy-MM-dd}.log.gz">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/> <!--># Ny varje dag, max  7 dagar. <-->
+                <SizeBasedTriggeringPolicy size="10MB"/> <!-->Ny när den gamla är 10MB<-->
+            </Policies>
+            <DefaultRolloverStrategy max="7"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+         <Logger name="com.ahlenius.wigell_cinema" level="DEBUG" additivity="false">
+            <AppenderRef ref="FILE"/>
+             <AppenderRef ref="CONSOLE"/>
+        </Logger>
+
+        <!--Fångar övrigt.-->
+        <Root level="WARN">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </Root>
+    </Loggers>
+
+</Configuration>

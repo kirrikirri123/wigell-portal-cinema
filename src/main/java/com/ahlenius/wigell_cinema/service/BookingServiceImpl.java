@@ -14,6 +14,8 @@ import com.ahlenius.wigell_cinema.repository.CustomerRepository;
 import com.ahlenius.wigell_cinema.repository.MovieRepository;
 import com.ahlenius.wigell_cinema.repository.RoomRepository;
 import org.apache.coyote.BadRequestException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +23,7 @@ import java.util.List;
 @Service
 public class BookingServiceImpl implements BookingService {
 
+    private static final Logger log = LoggerFactory.getLogger(BookingServiceImpl.class);
     private final BookingRepository bRepo;
     private final CustomerRepository cRepo;
     private final MovieRepository mRepo;
@@ -39,8 +42,7 @@ public class BookingServiceImpl implements BookingService {
         // Plocka ur objekt
         var customer = cRepo.findById(dto.customerId()).orElseThrow(() -> new NoCustomerFoundException("Ingen matchande kund hittades."));
         var room = rRepo.findById(dto.roomId()).orElseThrow(() -> new NoRoomFoundException("Inget matchande rum hittades."));
-
-        var movie = mRepo.findById(dto.movieId()).orElseThrow(() -> new NoMovieFoundException("Ingen matchande film hittades.")); //
+        var movie = mRepo.findById(dto.movieId()).orElseThrow(() -> new NoMovieFoundException("Ingen matchande film hittades.")); // Men Film är inte obligatoriskt? Lägg in funktion för att valiera bort och lägg en NOFILM i fältet?
         //skapa booking entitet
         Booking booking = BookingMapper.toEntity(dto);
         customer.addBooking(booking);
@@ -51,22 +53,26 @@ public class BookingServiceImpl implements BookingService {
         booking.setTotalPriceUSD(2);
 
         bRepo.save(booking);
-              BookingResponse response = BookingMapper.toDto(booking);
-        return response;
-    }
-
-    @Override
-    public BookingResponse patchBooking(Long id, PatchBookingDto dto) {
-        var booking = bRepo.findById(id).orElseThrow(()-> new NoBookingFoundException("Ingen matchande bokning hittad.")); //
-        if (dto.date() != null) booking.setDate(dto.date());
-        if (dto.time() != null) booking.setTime(dto.time());
-        if(dto.date() == null && dto.time()== null){throw new NoValidInputException("Ingen förändring gjord.");}
-        bRepo.save(booking);
+        log.info("Bookning skapad med ID: {} ", booking.getId());
         return BookingMapper.toDto(booking);
     }
 
     @Override
-    public List<BookingResponse> findBookingsByCustomerId(Long id) { //FUNKAR INTE ! Hämtar oberoende av id!
+    public BookingResponse patchBooking(Long id, PatchBookingDto dto) {
+        var booking = bRepo.findById(id).orElseThrow(() -> new NoBookingFoundException("Ingen matchande bokning hittad."));
+        if (dto.date() != null) booking.setDate(dto.date());
+        if (dto.time() != null) booking.setTime(dto.time());
+        if (dto.date() == null && dto.time() == null) {
+            log.error("Ingen uppdatering gjord på bokning {}", booking.getId());
+            throw new NoValidInputException("Ingen förändring gjord.");
+        }
+        bRepo.save(booking);
+        log.debug("Bookning med ID: {} uppdaterad.", booking.getId());
+        return BookingMapper.toDto(booking);
+    }
+
+    @Override
+    public List<BookingResponse> findBookingsByCustomerId(Long id) {
         var c = cRepo.findById(id).orElseThrow(() -> new NoCustomerFoundException("Ingen matchande kund hittades."));
         return c.getBookingList().stream()
                 .map(BookingMapper::toDto)
@@ -78,7 +84,7 @@ public class BookingServiceImpl implements BookingService {
         return bRepo.findAll().stream()
                 .map(BookingMapper::toDto)
                 .toList();
-            }
+    }
 }
 
 

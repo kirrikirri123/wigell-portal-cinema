@@ -7,6 +7,8 @@ import com.ahlenius.wigell_cinema.exception.NoRoomFoundException;
 import com.ahlenius.wigell_cinema.mapper.RoomMapper;
 import com.ahlenius.wigell_cinema.model.Room;
 import com.ahlenius.wigell_cinema.repository.RoomRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +17,7 @@ import java.util.List;
 @Service
 public class RoomService {
 
+    private static final Logger log = LoggerFactory.getLogger(RoomService.class);
     private final RoomRepository repo;
 
     public RoomService(RoomRepository repo) {
@@ -36,6 +39,7 @@ public class RoomService {
     @Transactional
     public RoomResponse saveRoom(CreateRoomDto dto) {
         Room room = repo.save(RoomMapper.toEntity(dto));
+        log.info("Lokal skapad med ID: {} ", room.getId());
          return RoomMapper.toDto(room);
     }
 
@@ -44,6 +48,7 @@ public class RoomService {
         Room room = repo.findById(id).orElseThrow(()-> new NoRoomFoundException("id :"+ id));
         RoomMapper.applyUpdate(room, dto);
         repo.save(room);
+        log.info("Lokal med ID: {} är uppdaterad.", id);
         return RoomMapper.toDto(room);
     }
 
