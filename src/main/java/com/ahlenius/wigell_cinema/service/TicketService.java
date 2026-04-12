@@ -9,6 +9,8 @@ import com.ahlenius.wigell_cinema.model.Ticket;
 import com.ahlenius.wigell_cinema.repository.CustomerRepository;
 import com.ahlenius.wigell_cinema.repository.ScreeningRepository;
 import com.ahlenius.wigell_cinema.repository.TicketRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
@@ -17,6 +19,7 @@ import java.util.List;
 @Service
 public class TicketService {
 
+    private static final Logger log = LoggerFactory.getLogger(TicketService.class);
     private final TicketRepository repo;
     private final ScreeningRepository sRepo;
     private final CustomerRepository cRepo;
@@ -36,7 +39,7 @@ public class TicketService {
            screening.addTicket(ticket);
            customer.addTicket(ticket);
                 repo.save(ticket); // Här sparar vi mot databas och får id.
-
+            log.info("Biljett skapad med ID: {}", ticket.getId());
         return TicketMapper.toDto(ticket);
     }
 
