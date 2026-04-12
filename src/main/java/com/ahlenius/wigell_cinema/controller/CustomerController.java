@@ -53,7 +53,7 @@ public class CustomerController {
   //  @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AddressResponse> addNewCostumerAddress(@PathVariable("customerId") Long id, @RequestBody @Valid CreateAddressDto dto) {
         AddressResponse response = service.addAddressToCostumerId(id,dto);
-
+            // Lägg till location!!
         return ResponseEntity.status(HttpStatus.CREATED).body(response); }
 
     @DeleteMapping("customers/{customerId}/addresses/{addressId}")
@@ -62,5 +62,10 @@ public class CustomerController {
         service.deleteAddressByCustomerId(customerId, addressId);
         return ResponseEntity.noContent().build();
     }
+    @GetMapping("customers/{customerId}/addresses")
+    //  @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<AddressResponse>> findAllAddressesOnCustomer(@PathVariable("customerId") Long id) {
+        List<AddressResponse> addressList = service.findAddressByCustomerId(id);
+        return ResponseEntity.ok(addressList); }
 
 }

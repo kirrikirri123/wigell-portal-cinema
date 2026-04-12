@@ -15,7 +15,10 @@ import java.util.List;
 public class DataLoader {
 
     @Bean
-    public CommandLineRunner initDatabase(CustomerRepository custRepo, MovieRepository movieRepo, RoomRepository roomRepo, BookingRepository bookingRepo, ScreeningRepository screenRepo, TicketRepository ticketRepo) {
+    public CommandLineRunner initDatabase(CustomerRepository custRepo, MovieRepository movieRepo,
+                                          RoomRepository roomRepo, BookingRepository bookingRepo,
+                                          ScreeningRepository screenRepo, TicketRepository ticketRepo,
+                                          AddressRepository addressRepo) {
         return args -> {
 
             Customer c1 = new Customer("Kalle", "Karlsson", "k_karlsson@mail.com", "0701111111", "kalleskundnamn");
@@ -51,7 +54,7 @@ public class DataLoader {
             Booking b4 = new Booking(c4, 5, r3, LocalDate.of(2026, 7, 1), LocalTime.of(19, 30, 0), m4, false);
             Booking b5 = new Booking(c5, 47, r2, LocalDate.of(2026, 8, 25), LocalTime.of(20, 10, 0), m5, false);
 
-            List<Booking> testBookings = List.of(b1,b2,b4,b5);
+            List<Booking> testBookings = List.of(b1, b2, b4, b5);
             bookingRepo.saveAll(testBookings);
 
             Screening s1 = new Screening(m1, r1, LocalDate.of(2026, 5, 18), LocalTime.of(14, 30));
@@ -64,18 +67,20 @@ public class DataLoader {
             screenRepo.saveAll(testScreening);
 
             List<Ticket> testTickets = List.of(
-            new Ticket(s1, c1),
-            new Ticket(s1, c2),
-            new Ticket(s2, c1),
-            new Ticket(s4, c3),
-            new Ticket(s3, c1),
-            new Ticket(s5, c4),
-            new Ticket(s5, c5));
+                    new Ticket(s1, c1),
+                    new Ticket(s1, c2),
+                    new Ticket(s2, c1),
+                    new Ticket(s4, c3),
+                    new Ticket(s3, c1),
+                    new Ticket(s5, c4),
+                    new Ticket(s5, c5));
 
             ticketRepo.saveAll(testTickets);
 
-            //List<Address> testAddresses = List.of();
-
+            List<Address> testAddresses = List.of(
+                    new Address("Brogatan 12", "90324", "Umeå", c2),
+                    new Address("Odalgatan 6", "98134", "Skellefteå", c3));
+            addressRepo.saveAll(testAddresses);
         };
 
     }

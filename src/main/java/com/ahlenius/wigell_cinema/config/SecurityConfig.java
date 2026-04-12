@@ -1,21 +1,18 @@
 package com.ahlenius.wigell_cinema.config;
 /*
 import org.springframework.context.annotation.Bean;
-
-
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,36 +24,35 @@ public class SecurityConfig {
 /*
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-        return http
+        http
                 .csrf (csrf -> csrf.disable())
                 .sessionManagement(sm ->sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/**").permitAll()
+                        .requestMatchers("/api/v1/**").hasAnyRole()
                         .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                  .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
-               .build();
+  .oauth2ResourceServer(oauth -> oauth.jwt(
+                        jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter())))
+                .exceptionHandling(e -> e
+                        .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
+                );
+        return http.build();
     }
 
-    @Bean
-    public JwtAuthenticationConverter jwtAuthenticationConverter() {
-        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-        converter.setJwtGrantedAuthoritiesConverter(jwt -> {
+    public Converter<Jwt,? extends AbstractAuthenticationToken> jwtAuthConverter() {
+        return jwt -> {
+            Collection<GrantedAuthority> authorities = new ArrayList<>();
 
-            Map<String, Object> realmAccess = jwt.getClaim("realm_access");
-            if (realmAccess == null || realmAccess.get("roles") == null) {
-                return List.of();
+            Map<String, Object> realmAccess = jwt.getClaimAsMap("realm_access");
+            if(realmAccess != null && realmAccess.get("roles") instanceof Collection<?> rawRoles){
+                for(Object r : rawRoles) {
+                    String role = String.valueOf(r).toUpperCase();
+                    authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+                }
             }
-            @SuppressWarnings("unchecked")
-            Collection<String> roles = (Collection<String>) realmAccess.get("roles");
-            return roles.stream()
-                    .map(roleName -> new SimpleGrantedAuthority("ROLE_" + roleName))
-                    .collect(Collectors.toList());
-        });
-        return converter;
+            return new JwtAuthenticationToken(jwt, authorities);
+        };
     }
 */
 }

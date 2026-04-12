@@ -58,8 +58,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     public AddressResponse addAddressToCostumerId(Long id, CreateAddressDto dto) {
         var found = repo.findById(id).orElseThrow(() -> new NoCustomerFoundException("Hittade ingen matchande kund med id: " + id));
+        // Här borde man dra en dubbel koll ifall adressen redan ligger inlagd på kunden så den inte läggs dubbelt.
         Address address = CustomerMapper.toAddressEntity(dto);
-        address.setCustomer(found);
+        found.addAddress(address);// Lägger i listan och sätter kunden på adressen.
         addressRepo.save(address);
         repo.save(found);
         return CustomerMapper.toDto(address);
@@ -69,8 +70,17 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     public void deleteAddressByCustomerId(Long customerId, Long addressId) {
         var found = repo.findById(customerId).orElseThrow(() -> new NoCustomerFoundException("Hittade ingen matchande kund med id: " + customerId));
-        Address address = found.getAddressList().stream().filter(a -> a.getId().equals(addressId))
+
+         Address address = found.getAddressList().stream().filter(a -> a.getId().equals(addressId))
                         .findFirst().orElseThrow(() -> new NoMatchingAddressIdException("Ingen adress med id: " + addressId + " hos kund med id: " + customerId));
-        addressRepo.delete(address);
+        addressRepo.delete(address);// ADRESS FINNS KVAR efter 201 no content.
+        repo.save(found);
+    }
+
+    @Override
+    public List<AddressResponse> findAddressByCustomerId(Long customerId) {
+        return addressRepo.findAddressByCustomerId(customerId).stream()
+                .map(CustomerMapper::toDto)
+                .toList();
     }
 }

@@ -1,6 +1,11 @@
 server:
   port: 8583
 
+info:
+  app:
+    name: Wigell Cinema
+    version: 1.0.0
+
 converter:
   service:
     url: http//localhost:8587
@@ -13,17 +18,15 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8081/realms/wigell-realm
-  threads:
-    virtual:
-      enabled: true # ger restclient linkande non blocking funktion som webclient. Ska den vara här eller i converter??
-  boot:
+
+  boot: #Behövs detta stycke för att dashboard ska funka?
     admin:
       client:
         url: http://localhost:9090
         username: admin
-        password: admin
+        password: admin123
         instance:
-          management-base-url: http://localhost:8088
+          service-base-url: http://localhost:8583
 
   datasource:
     url: jdbc:mysql://localhost:3306/wigell_cinema_db?createDatabaseIfNotExist=true
@@ -33,7 +36,7 @@ spring:
 
   jpa:
       hibernate:
-        ddl-auto: create-drop
+        ddl-auto: create
       show-sql: true
       properties:
         hibernate:
@@ -41,7 +44,7 @@ spring:
 
 management:
   server:
-    port: 8088
+    port: 8583
   endpoints:
     web:
       exposure:
@@ -49,4 +52,5 @@ management:
   endpoint:
     health:
       show-details: always
+
 
