@@ -53,9 +53,8 @@ public class BookingServiceImpl implements BookingService {
         booking.setTotalPriceUSD(2);
 
         bRepo.save(booking);
-        BookingResponse response = BookingMapper.toDto(booking);
         log.info("Bookning skapad med ID: {} ", booking.getId());
-        return response;
+        return BookingMapper.toDto(booking);
     }
 
     @Override

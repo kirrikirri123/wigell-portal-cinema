@@ -20,10 +20,9 @@
     </Appenders>
 
     <Loggers>
-        <!-- Hur använder man detta smidigt? -->
-        <Logger name="com.ahlenius.wigell_cinema" level="DEBUG" additivity="false">
+         <Logger name="com.ahlenius.wigell_cinema" level="DEBUG" additivity="false">
             <AppenderRef ref="FILE"/>
-            <AppenderRef ref="CONSOLE"/>
+             <AppenderRef ref="CONSOLE"/>
         </Logger>
 
         <!--Fångar övrigt.-->

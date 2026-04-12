@@ -38,8 +38,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     public CustomerResponse createCustomer(CreateCustomerDto dto) {
         Customer newCustomer = CustomerMapper.toEntity(dto);
+        Customer saved = repo.save(newCustomer);
         log.info("Kund skapad med ID: {} ", newCustomer.getId());
-        return CustomerMapper.toDto(repo.save(newCustomer));
+         return CustomerMapper.toDto(saved);
     }
 
     @Override
@@ -47,8 +48,9 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerResponse updateCustomer(Long id, UpdateCustomerDto dto) {
         var found = repo.findById(id).orElseThrow(() -> new NoCustomerFoundException("Hittade ingen matchande kund med id: " + id));
         Customer updated = CustomerMapper.applyUpdate(found, dto);
+        Customer saved = repo.save(updated);
         log.debug("Kund med ID: {} är uppdaterad", updated.getId());
-        return CustomerMapper.toDto(repo.save(updated));
+        return CustomerMapper.toDto(saved);
     }
 
     @Override
