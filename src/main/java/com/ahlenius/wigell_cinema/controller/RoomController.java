@@ -6,7 +6,7 @@ import com.ahlenius.wigell_cinema.dto.roomDto.UpdateRoomDto;
 import com.ahlenius.wigell_cinema.service.RoomService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -23,29 +23,29 @@ public class RoomController {
     }
 
     @GetMapping("/rooms")
-  //  @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<RoomResponse> findAllRooms() {
         return service.findAllRooms();
-  }
+    }
 
     @GetMapping("rooms/{roomId}")
-  //  @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RoomResponse> findRoomById(@PathVariable("roomId") Long id) {
-        RoomResponse found =service.findRoomById(id);
+        RoomResponse found = service.findRoomById(id);
         return ResponseEntity.ok(found);
     }
 
     @PostMapping("/rooms")
-  //  @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RoomResponse> createRoom(@RequestBody @Valid CreateRoomDto dto) {
         var saved = service.saveRoom(dto);
         var uriLocation = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(saved.id().toString()).toUri();
-                return ResponseEntity.created(uriLocation).body(saved);
+        return ResponseEntity.created(uriLocation).body(saved);
     }
 
     @PutMapping("/rooms/{roomId}")
- //   @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RoomResponse> updateRoom(@PathVariable("roomId") Long id, @RequestBody @Valid UpdateRoomDto dto) {
         RoomResponse updated = service.updateRoom(id, dto);
         return ResponseEntity.ok().body(updated);
