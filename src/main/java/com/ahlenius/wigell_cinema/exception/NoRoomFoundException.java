@@ -4,6 +4,6 @@ import org.springframework.http.HttpStatus;
 
 public class NoRoomFoundException extends ParentExceptionClass {
     public NoRoomFoundException (String message) {
-        super(message, HttpStatus.NO_CONTENT,"No value to return");
+        super(message, HttpStatus.NO_CONTENT,HttpStatus.NO_CONTENT.name());
     }
 }

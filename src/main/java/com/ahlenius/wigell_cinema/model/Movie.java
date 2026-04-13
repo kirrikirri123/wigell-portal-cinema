@@ -21,7 +21,7 @@ public class Movie {
     @Column(length = 7, nullable = false)
     @Enumerated(EnumType.STRING)
     private AgeLimit ageLimit;
-    @OneToMany(mappedBy = "movie", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.PERSIST, orphanRemoval = false, fetch = FetchType.LAZY)
     private List<Booking> bookingList= new ArrayList<>();
     @OneToMany(mappedBy = "movie", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Screening> screeningList= new ArrayList<>();

@@ -13,6 +13,7 @@ import com.ahlenius.wigell_cinema.repository.RoomRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional
     public BookingResponse saveBooking(CreateBookingDto dto) {
         // Plocka ur objekt
         var customer = cRepo.findById(dto.customerId()).orElseThrow(() -> new NoCustomerFoundException("Ingen matchande kund hittades."));
@@ -52,6 +54,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional
     public BookingResponse patchBooking(Long id, PatchBookingDto dto) {
         var booking = bRepo.findById(id).orElseThrow(() -> new NoBookingFoundException("Ingen matchande bokning hittad."));
         if (dto.date() != null) booking.setDate(dto.date());
@@ -66,6 +69,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional
     public List<BookingResponse> findBookingsByCustomerId(Long id) {
         var c = cRepo.findById(id).orElseThrow(() -> new NoCustomerFoundException("Ingen matchande kund hittades."));
         return c.getBookingList().stream()
@@ -74,6 +78,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional
     public List<BookingResponse> findALlBookings() {
         return bRepo.findAll().stream()
                 .map(BookingMapper::toDto)
