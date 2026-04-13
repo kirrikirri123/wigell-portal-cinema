@@ -2,6 +2,7 @@ package com.ahlenius.wigell_cinema.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -25,11 +26,11 @@ public class Booking {
     @JoinColumn(name="movie_id")
     private Movie movie;
     @Column(nullable = false)
-    private boolean privateSpeaker; // hur ska man lägga upp detta? Vore av fördel att ha en vari
-    @Column(name = "total_price_SEK",length = 50, nullable = false)
-    private double totalPriceSEK; // sett detta utifrån attendees och movie/privateSpeeker
-    @Column(name= "total_price_USD",length = 50, nullable = false)
-    private double totalPriceUSD; // sett detta med hjälp av converterfunction.
+    private boolean privateSpeaker;
+    @Column(name = "total_price_SEK",length = 50)
+    private BigDecimal totalPriceSEK;
+    @Column(name= "total_price_USD",length = 50)
+    private BigDecimal totalPriceUSD;
 
     protected Booking() {}
  // test ! Sätter via hjälpmetoder efteråt mapping?
@@ -64,20 +65,20 @@ public class Booking {
         return id;
     }
 
-    public double getTotalPriceUSD() {
-        return totalPriceUSD;
-    }
-
-    public void setTotalPriceUSD(double totalPriceUSD) {
-        this.totalPriceUSD = totalPriceUSD;
-    }
-
-    public double getTotalPriceSEK() {
+    public BigDecimal getTotalPriceSEK() {
         return totalPriceSEK;
     }
 
-    public void setTotalPriceSEK(double totalPriceSEK) {
+    public void setTotalPriceSEK(BigDecimal totalPriceSEK) {
         this.totalPriceSEK = totalPriceSEK;
+    }
+
+    public BigDecimal getTotalPriceUSD() {
+        return totalPriceUSD;
+    }
+
+    public void setTotalPriceUSD(BigDecimal totalPriceUSD) {
+        this.totalPriceUSD = totalPriceUSD;
     }
 
     public boolean isPrivateSpeaker() {

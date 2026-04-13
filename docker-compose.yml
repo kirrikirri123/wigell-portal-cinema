@@ -33,4 +33,7 @@ services:
 volumes:
   mysql_data:
 
+
+
+
     #Samma på alla microtjänster. FÖr allas möjligheter att köra docker likadant.

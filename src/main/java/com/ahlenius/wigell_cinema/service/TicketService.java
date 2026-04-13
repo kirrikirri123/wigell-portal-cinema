@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -23,11 +22,13 @@ public class TicketService {
     private final TicketRepository repo;
     private final ScreeningRepository sRepo;
     private final CustomerRepository cRepo;
+    private final PricingService pricingService;
 
-    public TicketService(TicketRepository repo, ScreeningRepository sRepo, CustomerRepository cRepo) {
+    public TicketService(TicketRepository repo, ScreeningRepository sRepo, CustomerRepository cRepo, PricingService pricingService) {
         this.repo = repo;
         this.sRepo = sRepo;
         this.cRepo = cRepo;
+        this.pricingService = pricingService;
     }
 
     @Transactional
@@ -36,6 +37,7 @@ public class TicketService {
         var customer =  cRepo.findById(dto.customerId()).orElseThrow(()-> new NoCustomerFoundException("Ingen matchande kund."));
         //Entitys Skapas
            Ticket ticket = TicketMapper.toEntity(screening,customer);
+           pricingService.setTicketPrice(ticket);
            screening.addTicket(ticket);
            customer.addTicket(ticket);
                 repo.save(ticket); // Här sparar vi mot databas och får id.

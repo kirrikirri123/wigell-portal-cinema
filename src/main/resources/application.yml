@@ -8,7 +8,7 @@ info:
 
 converter:
   service:
-    url: http//localhost:8587
+    url: http://localhost:8587
 
 spring:
   application:
