@@ -6,7 +6,7 @@ import com.ahlenius.wigell_cinema.dto.bookingDto.CreateBookingDto;
 import com.ahlenius.wigell_cinema.service.BookingService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -23,7 +23,7 @@ public class BookingController {
     }
 
     @PostMapping("/bookings")
-    //  @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<BookingResponse> reserveRoom(@RequestBody @Valid CreateBookingDto dto) {
         var saved = service.saveBooking(dto);
         var uriLocation = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -32,20 +32,24 @@ public class BookingController {
                 .toUri();
         return ResponseEntity.created(uriLocation).body(saved);
     }
+
     @PatchMapping("/bookings/{bookingId}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<BookingResponse> patchBooking(@PathVariable("bookingId") Long id, @RequestBody @Valid PatchBookingDto dto) {
         BookingResponse response = service.patchBooking(id, dto);
         return ResponseEntity.ok(response);
         //(tillåtna fält: datum, teknisk utrustning) Uppdatera rumsreservering- teknisk utrustning finns i rum. Kund får kolla rums spec innan bokning.
     }
-    @GetMapping(value= "/bookings", params = {"customerId"})
- // @PreAuthorize("hasRole('USER')")
+
+    @GetMapping(value = "/bookings", params = {"customerId"})
+    @PreAuthorize("hasRole('USER')")
     public List<BookingResponse> findBookingsByCustomerId(@RequestParam Long customerId) {
-         return service.findBookingsByCustomerId(customerId);
+        return service.findBookingsByCustomerId(customerId);
     }
-  // Extra metod för egen testnings skull.
+
+    // Extra metod för egen testnings skull.
     @GetMapping("/bookings")
- // @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<BookingResponse> findAllBookings() {
         return service.findALlBookings();
     }

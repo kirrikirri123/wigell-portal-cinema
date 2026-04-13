@@ -5,7 +5,6 @@ import com.ahlenius.wigell_cinema.service.CustomerService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -16,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class CustomerController {
 
-    private CustomerService service;
+    private final CustomerService service;
 
     public CustomerController(CustomerService service) {
         this.service = service;
@@ -59,7 +58,7 @@ public class CustomerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @DeleteMapping("customers/{customerId}/addresses/{addressId}")
+    @DeleteMapping("customers/{customerId}/addresses/{addressId}") // FUNKAR EJ.
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteCustomerAddressById(@PathVariable("customerId") Long customerId, @PathVariable("addressId") Long addressId) {
         service.deleteAddressByCustomerId(customerId, addressId);

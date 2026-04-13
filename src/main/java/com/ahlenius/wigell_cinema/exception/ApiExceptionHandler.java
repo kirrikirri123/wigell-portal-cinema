@@ -18,7 +18,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<ErrorResponse> handleExceptions(Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR,
-                        e.getMessage(), // vilka meddelanden kommer ut? vad vill man skydda/ förklara annars? ex. No static resource api/v1."
+                        e.getMessage(),
                         "Ett oväntat fel uppstod."));
     }
 
