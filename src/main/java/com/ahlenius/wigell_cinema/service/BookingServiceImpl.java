@@ -6,14 +6,10 @@ import com.ahlenius.wigell_cinema.dto.bookingDto.CreateBookingDto;
 import com.ahlenius.wigell_cinema.exception.*;
 import com.ahlenius.wigell_cinema.mapper.BookingMapper;
 import com.ahlenius.wigell_cinema.model.Booking;
-import com.ahlenius.wigell_cinema.model.Customer;
-import com.ahlenius.wigell_cinema.model.Movie;
-import com.ahlenius.wigell_cinema.model.Room;
 import com.ahlenius.wigell_cinema.repository.BookingRepository;
 import com.ahlenius.wigell_cinema.repository.CustomerRepository;
 import com.ahlenius.wigell_cinema.repository.MovieRepository;
 import com.ahlenius.wigell_cinema.repository.RoomRepository;
-import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -28,13 +24,14 @@ public class BookingServiceImpl implements BookingService {
     private final CustomerRepository cRepo;
     private final MovieRepository mRepo;
     private final RoomRepository rRepo;
-    //private final WebClient webClient;
+    private final PricingService pricingService;
 
-    public BookingServiceImpl(BookingRepository bRepo, CustomerRepository cRepo, MovieRepository mRepo, RoomRepository rRepo) {
+    public BookingServiceImpl(BookingRepository bRepo, CustomerRepository cRepo, MovieRepository mRepo, RoomRepository rRepo, PricingService pricingService) {
         this.bRepo = bRepo;
         this.cRepo = cRepo;
         this.mRepo = mRepo;
         this.rRepo = rRepo;
+        this.pricingService = pricingService;
     }
 
     @Override
@@ -42,16 +39,13 @@ public class BookingServiceImpl implements BookingService {
         // Plocka ur objekt
         var customer = cRepo.findById(dto.customerId()).orElseThrow(() -> new NoCustomerFoundException("Ingen matchande kund hittades."));
         var room = rRepo.findById(dto.roomId()).orElseThrow(() -> new NoRoomFoundException("Inget matchande rum hittades."));
-        var movie = mRepo.findById(dto.movieId()).orElseThrow(() -> new NoMovieFoundException("Ingen matchande film hittades.")); // Men Film är inte obligatoriskt? Lägg in funktion för att valiera bort och lägg en NOFILM i fältet?
+        var movie = mRepo.findById(dto.movieId()).orElseThrow(() -> new NoMovieFoundException("Ingen matchande film hittades."));
         //skapa booking entitet
         Booking booking = BookingMapper.toEntity(dto);
         customer.addBooking(booking);
         room.addBooking(booking);
         movie.addBooking(booking);
-
-        booking.setTotalPriceSEK(1);
-        booking.setTotalPriceUSD(2);
-
+        pricingService.setBookingPrice(booking);
         bRepo.save(booking);
         log.info("Bookning skapad med ID: {} ", booking.getId());
         return BookingMapper.toDto(booking);

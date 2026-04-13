@@ -15,10 +15,10 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="screening_id")
     private Screening screening;
-    @Column(name = "total_price_SEK",length = 15, nullable = false)
-    private BigDecimal totalPriceSEK;  // alltid samma pris
-    @Column(name= "total_price_USD",length = 15, nullable = false)
-    private BigDecimal totalPriceUSD; // sett detta med hjälp av converterfunction.
+    @Column(name = "total_price_SEK",length = 15)
+    private  BigDecimal totalPriceSEK;
+    @Column(name= "total_price_USD",length = 15)
+    private BigDecimal totalPriceUSD;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name= "customer_id")
     private Customer customer;
@@ -28,8 +28,8 @@ public class Ticket {
     public Ticket(Screening screening, Customer customer) {
         this.screening = screening;
         this.customer = customer;
-        this.totalPriceSEK = BigDecimal.valueOf(85);
-        this.totalPriceUSD = (this.totalPriceSEK).multiply(BigDecimal.valueOf(2));
+        this.totalPriceSEK = BigDecimal.valueOf(85); // Just nu alltid samma pris.
+        this.totalPriceUSD = getTotalPriceUSD() ;
     }
 
     public Ticket(Screening screening) {
@@ -46,10 +46,6 @@ public class Ticket {
 
     public BigDecimal getTotalPriceSEK() {
         return totalPriceSEK;
-    }
-
-    public void setTotalPriceSEK(BigDecimal totalPriceSEK) {
-        this.totalPriceSEK = totalPriceSEK;
     }
 
     public Screening getScreening() {

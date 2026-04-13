@@ -40,8 +40,9 @@ public class DataLoader {
             Movie m3 = new Movie("Gripande Verklighet", Genre.DOCUMENTARY, 120, AgeLimit.TEENS);
             Movie m4 = new Movie("Help", Genre.HORROR, 190, AgeLimit.GROWNUP);
             Movie m5 = new Movie("Chockerande vändingar", Genre.DRAMA, 60, AgeLimit.TEENS);
+            Movie noMovie = new Movie("NO MOVIE", Genre.SILENT, 60, AgeLimit.MINI);
 
-            List<Movie> testMovies = List.of(m1, m2, m3, m4, m5);
+            List<Movie> testMovies = List.of(m1, m2, m3, m4, m5,noMovie);
             movieRepo.saveAll(testMovies);
             log.info("{} st filmer laddade.", testMovies.size());
 
@@ -57,7 +58,7 @@ public class DataLoader {
 
             Booking b1 = new Booking(c1, 10, r1, LocalDate.of(2026, 4, 13), LocalTime.of(18, 30, 0), m1, false);
             Booking b2 = new Booking(c2, 65, r4, LocalDate.of(2026, 5, 15), LocalTime.of(12, 0, 0), m2, false);
-            //Booking b3 = new Booking(c3, 25, r5, LocalDate.of(2026, 6, 6), LocalTime.of(15, 0, 0), true); Fixa så man inte behöver boka en film.
+            Booking b3 = new Booking(c3, 25, r5, LocalDate.of(2026, 6, 6), LocalTime.of(15, 0, 0),noMovie, true);
             Booking b4 = new Booking(c4, 5, r3, LocalDate.of(2026, 7, 1), LocalTime.of(19, 30, 0), m4, false);
             Booking b5 = new Booking(c5, 47, r2, LocalDate.of(2026, 8, 25), LocalTime.of(20, 10, 0), m5, false);
 
