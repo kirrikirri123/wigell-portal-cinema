@@ -15,6 +15,6 @@ public record CreateBookingDto(
         @NotNull(message = "Önskad tid behöver anges.")
         LocalTime time,
         @NotNull(message = "Sätt filmID nr. 6 om du önskar boka utan filmvisning.")
-        Long movieId,// Om man inte vill ha en filmvisning sätter man NOMovie alternativet- 6 .
+        Long movieId,// Om man inte vill ha en filmvisning sätter man noMovie alternativet - 6 .
         boolean privateSpeaker) {
 }

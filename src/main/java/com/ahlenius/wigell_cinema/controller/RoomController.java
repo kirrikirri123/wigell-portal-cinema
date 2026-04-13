@@ -24,8 +24,8 @@ public class RoomController {
 
     @GetMapping("/rooms")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<RoomResponse> findAllRooms() {
-        return service.findAllRooms();
+    public ResponseEntity<List<RoomResponse>> findAllRooms() {
+        return ResponseEntity.ok(service.findAllRooms());
     }
 
     @GetMapping("rooms/{roomId}")

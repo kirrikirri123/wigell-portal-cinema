@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -57,12 +58,17 @@ public class DataLoader {
             log.info("{} st lokaler laddade.", testRooms.size());
 
             Booking b1 = new Booking(c1, 10, r1, LocalDate.of(2026, 4, 13), LocalTime.of(18, 30, 0), m1, false);
+            b1.setTotalPriceSEK(BigDecimal.valueOf(1700)); b1.setTotalPriceUSD(BigDecimal.valueOf(1700).multiply(BigDecimal.valueOf(0.11)));
             Booking b2 = new Booking(c2, 65, r4, LocalDate.of(2026, 5, 15), LocalTime.of(12, 0, 0), m2, false);
+            b2.setTotalPriceSEK(BigDecimal.valueOf(850)); b2.setTotalPriceUSD(BigDecimal.valueOf(850).multiply(BigDecimal.valueOf(0.11)));
             Booking b3 = new Booking(c3, 25, r5, LocalDate.of(2026, 6, 6), LocalTime.of(15, 0, 0),noMovie, true);
+            b3.setTotalPriceSEK(BigDecimal.valueOf(1100)); b3.setTotalPriceUSD(BigDecimal.valueOf(1100).multiply(BigDecimal.valueOf(0.11)));
             Booking b4 = new Booking(c4, 5, r3, LocalDate.of(2026, 7, 1), LocalTime.of(19, 30, 0), m4, false);
+            b4.setTotalPriceSEK(BigDecimal.valueOf(1000)); b4.setTotalPriceUSD(BigDecimal.valueOf(1000).multiply(BigDecimal.valueOf(0.11)));
             Booking b5 = new Booking(c5, 47, r2, LocalDate.of(2026, 8, 25), LocalTime.of(20, 10, 0), m5, false);
+            b5.setTotalPriceSEK(BigDecimal.valueOf(2000)); b5.setTotalPriceUSD(BigDecimal.valueOf(2000).multiply(BigDecimal.valueOf(0.11)));
 
-            List<Booking> testBookings = List.of(b1, b2, b4, b5);
+            List<Booking> testBookings = List.of(b1, b2, b3, b4, b5);
             bookingRepo.saveAll(testBookings);
             log.info("{} st bokningar laddade.", testBookings.size());
 
@@ -85,6 +91,7 @@ public class DataLoader {
                     new Ticket(s5, c4),
                     new Ticket(s5, c5));
 
+            testTickets.forEach(ticket -> {ticket.setTotalPriceSEK(BigDecimal.valueOf(95));});
             ticketRepo.saveAll(testTickets);
             log.info("{} st biljetter laddade.", testTickets.size());
 

@@ -1,6 +1,7 @@
 package com.ahlenius.wigell_cinema.service;
 
 import com.ahlenius.wigell_cinema.dto.customerDto.*;
+import com.ahlenius.wigell_cinema.exception.ConflictException;
 import com.ahlenius.wigell_cinema.exception.NoMatchingAddressIdException;
 import com.ahlenius.wigell_cinema.exception.NoCustomerFoundException;
 import com.ahlenius.wigell_cinema.mapper.CustomerMapper;
@@ -66,8 +67,13 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     public AddressResponse addAddressToCostumerId(Long id, CreateAddressDto dto) {
         var found = repo.findById(id).orElseThrow(() -> new NoCustomerFoundException("Hittade ingen matchande kund med id: " + id));
-        // Här borde man dra en dubbel koll ifall adressen redan ligger inlagd på kunden så den inte läggs dubbelt.
         Address address = CustomerMapper.toAddressEntity(dto);
+        List<Address>addressList= found.getAddressList();
+        for(Address a:addressList){
+            if(a.getStreet().equals(address.getStreet())&& a.getZipcode().equals(address.getZipcode())&& a.getCity().equals(address.getCity())){
+                throw new ConflictException("Adressen är redan registerad på kund med ID: "+ id);
+            }
+        }
         found.addAddress(address);// Lägger i listan och sätter kunden på adressen.
         addressRepo.save(address);
         log.info("Address skapad med ID: {} ", address.getId());
@@ -81,9 +87,8 @@ public class CustomerServiceImpl implements CustomerService {
     public void deleteAddressByCustomerId(Long customerId, Long addressId) {
         var found = repo.findById(customerId).orElseThrow(() -> new NoCustomerFoundException("Hittade ingen matchande kund med id: " + customerId));
 
-         Address address = found.getAddressList().stream().filter(a -> a.getId().equals(addressId))
-                        .findFirst().orElseThrow(() -> new NoMatchingAddressIdException("Ingen adress med id: " + addressId + " hos kund med id: " + customerId));
-        addressRepo.delete(address);// ADRESS FINNS KVAR efter 201 no content.
+        boolean removed = found.getAddressList().removeIf(a -> a.getId().equals(addressId)); // removed == true ifall match och remove görs.
+        if(!removed){throw new NoMatchingAddressIdException("Ingen adress med id: " + addressId + " hos kund med id: " + customerId);}
         log.info("Address med ID: {} hos Kund med ID: {} togs bort.",addressId,customerId);
         repo.save(found);
     }

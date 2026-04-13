@@ -38,20 +38,19 @@ public class BookingController {
     public ResponseEntity<BookingResponse> patchBooking(@PathVariable("bookingId") Long id, @RequestBody @Valid PatchBookingDto dto) {
         BookingResponse response = service.patchBooking(id, dto);
         return ResponseEntity.ok(response);
-        //(tillåtna fält: datum, teknisk utrustning) Uppdatera rumsreservering- teknisk utrustning finns i rum. Kund får kolla rums spec innan bokning.
     }
 
     @GetMapping(value = "/bookings", params = {"customerId"})
     @PreAuthorize("hasRole('USER')")
-    public List<BookingResponse> findBookingsByCustomerId(@RequestParam Long customerId) {
-        return service.findBookingsByCustomerId(customerId);
+    public ResponseEntity<List<BookingResponse>> findBookingsByCustomerId(@RequestParam Long customerId) {
+        return ResponseEntity.ok(service.findBookingsByCustomerId(customerId));
     }
 
-    // Extra metod för egen testnings skull.
+    /// Extra Get-metod för min egen testnings skull.
     @GetMapping("/bookings")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<BookingResponse> findAllBookings() {
-        return service.findALlBookings();
+    public ResponseEntity<List<BookingResponse>> findAllBookings() {
+          return ResponseEntity.ok(service.findALlBookings());
     }
 
 }

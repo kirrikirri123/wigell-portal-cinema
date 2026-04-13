@@ -21,12 +21,11 @@ public class RoomMapper {
         return new Room(dto.name(), dto.maxGuest(), dto.equipment());
     }
 
-    // skriver över objektet. Men vad händer om man vill behålla ett värde? sk amn ta det i beaktning.
-    public static Room applyUpdate(Room r, UpdateRoomDto dto) {
+
+    public static void applyUpdate(Room r, UpdateRoomDto dto) {
         r.setName(dto.name());
         r.setMaxGuest(dto.maxGuest());
         r.setEquipment(dto.equipment());
-        return r;
     }
 
 }

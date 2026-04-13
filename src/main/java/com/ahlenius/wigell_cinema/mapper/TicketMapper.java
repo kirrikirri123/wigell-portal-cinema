@@ -1,7 +1,5 @@
 package com.ahlenius.wigell_cinema.mapper;
 
-
-import com.ahlenius.wigell_cinema.dto.ticketDto.CreateTicketDto;
 import com.ahlenius.wigell_cinema.dto.ticketDto.TicketResponse;
 import com.ahlenius.wigell_cinema.model.Customer;
 import com.ahlenius.wigell_cinema.model.Screening;

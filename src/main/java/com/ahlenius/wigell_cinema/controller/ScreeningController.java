@@ -24,14 +24,14 @@ public class ScreeningController {
 
     @GetMapping(value = "/screenings", params = {"movieId", "date"})
     @PreAuthorize("hasRole('USER')")
-    public List<ScreeningResponse> findScreeningsByDate(@RequestParam Long movieId, @RequestParam LocalDate date) {
-        return service.findAllScreeningsByDate(movieId, date);
+    public ResponseEntity<List<ScreeningResponse>> findScreeningsByDate(@RequestParam Long movieId, @RequestParam LocalDate date) {
+        return ResponseEntity.ok(service.findAllScreeningsByDate(movieId, date));
     }
 
     @GetMapping("/screenings")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<ScreeningResponse> findAllScreenings() {
-        return service.findAllScreenings();
+    public ResponseEntity<List<ScreeningResponse>> findAllScreenings() {
+        return ResponseEntity.ok(service.findAllScreenings());
     }
 
     @PostMapping("/screenings")

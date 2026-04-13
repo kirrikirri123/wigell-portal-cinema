@@ -44,10 +44,12 @@ public class Ticket {
         this.totalPriceUSD = totalPriceUSD;
     }
 
+    public void setTotalPriceSEK(BigDecimal totalPriceSEK) {
+        this.totalPriceSEK = totalPriceSEK;
+    }
     public BigDecimal getTotalPriceSEK() {
         return totalPriceSEK;
     }
-
     public Screening getScreening() {
         return screening;
     }
