@@ -4,6 +4,6 @@ import org.springframework.http.HttpStatus;
 
 public class NoMatchingAddressIdException extends ParentExceptionClass {
     public NoMatchingAddressIdException(String message) {
-        super(message, HttpStatus.NOT_FOUND,"No matching address id");
+        super(message, HttpStatus.NOT_FOUND,HttpStatus.NOT_FOUND.name());
     }
 }
