@@ -17,15 +17,16 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8081/realms/wigell-realm
+          issuer-uri: https://grupp-d.eduflexlms.se/realms/wigell-realm #http://localhost:8081/realms/wigell-realm
 
-  boot: #Behövs detta stycke för att dashboard ska funka?
+  boot: #Behövs detta stycke för att dashboard ska funka? SÅ den funkar lokalt.
     admin:
       client:
         url: http://localhost:9090
         username: admin
         password: admin123
         instance:
+          name: wigell-cinema
           service-base-url: http://localhost:8583
 
   datasource:

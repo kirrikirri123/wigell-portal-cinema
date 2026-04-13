@@ -1,5 +1,5 @@
 package com.ahlenius.wigell_cinema.config;
-/*
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -19,16 +19,16 @@ import java.util.Collection;
 import java.util.Map;
 
 @Configuration
-@EnableMethodSecurity*/
+@EnableMethodSecurity
 public class SecurityConfig {
-/*
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf (csrf -> csrf.disable())
                 .sessionManagement(sm ->sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/**").hasAnyRole()
+                        .requestMatchers("/api/v1/**").hasAnyRole("USER","ADMIN")
                         .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -54,5 +54,5 @@ public class SecurityConfig {
             return new JwtAuthenticationToken(jwt, authorities);
         };
     }
-*/
+
 }
