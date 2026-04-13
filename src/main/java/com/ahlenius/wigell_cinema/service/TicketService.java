@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
@@ -33,20 +34,20 @@ public class TicketService {
 
     @Transactional
     public TicketResponse saveTicket(CreateTicketDto dto) {
-        var screening = sRepo.findById(dto.screeningId()).orElseThrow(()-> new NoScreeningFoundException("Hittade ingen matchande visning."));
-        var customer =  cRepo.findById(dto.customerId()).orElseThrow(()-> new NoCustomerFoundException("Ingen matchande kund."));
-        //Entitys Skapas
-           Ticket ticket = TicketMapper.toEntity(screening,customer);
-           pricingService.setTicketPrice(ticket);
-           screening.addTicket(ticket);
-           customer.addTicket(ticket);
-                repo.save(ticket); // Här sparar vi mot databas och får id.
-            log.info("Biljett skapad med ID: {}", ticket.getId());
+        var screening = sRepo.findById(dto.screeningId()).orElseThrow(() -> new NoScreeningFoundException("Hittade ingen matchande visning."));
+        var customer = cRepo.findById(dto.customerId()).orElseThrow(() -> new NoCustomerFoundException("Ingen matchande kund."));
+
+        Ticket ticket = TicketMapper.toEntity(screening, customer);
+        pricingService.setTicketPrice(ticket);
+        screening.addTicket(ticket);
+        customer.addTicket(ticket);
+        repo.save(ticket);
+        log.info("Biljett skapad med ID: {}", ticket.getId());
         return TicketMapper.toDto(ticket);
     }
 
     @Transactional
-    public List<TicketResponse> customerTickets(Long  customerId) {
+    public List<TicketResponse> customerTickets(Long customerId) {
         return repo.findTicketByCustomerId(customerId).stream()
                 .map(TicketMapper::toDto)
                 .toList();

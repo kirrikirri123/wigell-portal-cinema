@@ -23,8 +23,8 @@ public class CustomerController {
 
     @GetMapping("/customers")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<CustomerResponse> findAllCustomers() {
-        return service.findAllCustomer();
+    public ResponseEntity<List<CustomerResponse>> findAllCustomers()
+    { return ResponseEntity.ok(service.findAllCustomer());
     }
 
     @PostMapping("/customers")
@@ -54,11 +54,10 @@ public class CustomerController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AddressResponse> addNewCostumerAddress(@PathVariable("customerId") Long id, @RequestBody @Valid CreateAddressDto dto) {
         AddressResponse response = service.addAddressToCostumerId(id, dto);
-        // Lägg till location??
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @DeleteMapping("customers/{customerId}/addresses/{addressId}") // FUNKAR EJ.
+    @DeleteMapping("customers/{customerId}/addresses/{addressId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteCustomerAddressById(@PathVariable("customerId") Long customerId, @PathVariable("addressId") Long addressId) {
         service.deleteAddressByCustomerId(customerId, addressId);

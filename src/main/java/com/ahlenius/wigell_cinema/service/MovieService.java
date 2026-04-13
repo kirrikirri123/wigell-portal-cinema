@@ -2,12 +2,10 @@ package com.ahlenius.wigell_cinema.service;
 
 import com.ahlenius.wigell_cinema.dto.movieDto.CreateMovieDto;
 import com.ahlenius.wigell_cinema.dto.movieDto.MovieResponse;
-import com.ahlenius.wigell_cinema.exception.DeleteConflictException;
+import com.ahlenius.wigell_cinema.exception.ConflictException;
 import com.ahlenius.wigell_cinema.exception.NoMovieFoundException;
 import com.ahlenius.wigell_cinema.exception.NoCustomerFoundException;
 import com.ahlenius.wigell_cinema.mapper.MovieMapper;
-import com.ahlenius.wigell_cinema.model.Booking;
-import com.ahlenius.wigell_cinema.model.Movie;
 import com.ahlenius.wigell_cinema.repository.BookingRepository;
 import com.ahlenius.wigell_cinema.repository.MovieRepository;
 import org.slf4j.Logger;
@@ -48,7 +46,7 @@ public class MovieService {
         if (!repo.existsById(id)) {
             throw new NoCustomerFoundException("Hittade ingen film med id: " + id);}
         var foundBooking = bRepo.findMovieById(id).orElse(null);
-        if(foundBooking != null) { throw new DeleteConflictException("Kan ej ta bort film då den är kopplad mot bokning med ID: "+foundBooking.getId());
+        if(foundBooking != null) { throw new ConflictException("Kan ej ta bort film då den är kopplad mot bokning med ID: "+foundBooking.getId());
         }
 
         repo.deleteById(id);

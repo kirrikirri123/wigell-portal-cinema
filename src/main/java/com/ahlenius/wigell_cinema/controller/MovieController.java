@@ -23,8 +23,8 @@ public class MovieController {
 
     @GetMapping("/movies")
     @PreAuthorize("hasRole('USER')or hasRole('ADMIN')")
-    public List<MovieResponse> findAllMovies() {
-        return service.findAll();
+    public ResponseEntity<List<MovieResponse>> findAllMovies() {
+        return ResponseEntity.ok(service.findAll());
     }
 
     @PostMapping("/movies")

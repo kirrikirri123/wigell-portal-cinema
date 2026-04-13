@@ -14,26 +14,27 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name= "customer_id")
+    @JoinColumn(name = "customer_id")
     private Customer customer;
     private int attendees;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name= "room_id")
+    @JoinColumn(name = "room_id")
     private Room room;
     private LocalDate date;
     private LocalTime time;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="movie_id")
+    @JoinColumn(name = "movie_id")
     private Movie movie;
     @Column(nullable = false)
     private boolean privateSpeaker;
-    @Column(name = "total_price_SEK",length = 50)
+    @Column(name = "total_price_SEK", length = 50)
     private BigDecimal totalPriceSEK;
-    @Column(name= "total_price_USD",length = 50)
+    @Column(name = "total_price_USD", length = 50)
     private BigDecimal totalPriceUSD;
 
-    protected Booking() {}
- // test ! Sätter via hjälpmetoder efteråt mapping?
+    protected Booking() {
+    }
+
     public Booking(int attendees, LocalDate date, LocalTime time, boolean privateSpeaker) {
         this.attendees = attendees;
         this.date = date;
@@ -41,7 +42,6 @@ public class Booking {
         this.privateSpeaker = privateSpeaker;
     }
 
-    // sätter pris efteråt!
     public Booking(Customer customer, int attendees, Room room, LocalDate date, LocalTime time, Movie movie, boolean privateSpeaker) {
         this.customer = customer;
         this.attendees = attendees;
@@ -49,15 +49,6 @@ public class Booking {
         this.date = date;
         this.time = time;
         this.movie = movie;
-        this.privateSpeaker = privateSpeaker;
-    }
- //konstruktor utan movie pga. kanske bara har en egen talare.
-    public Booking(Customer customer, int attendees, Room room, LocalDate date, LocalTime time, boolean privateSpeaker) {
-        this.customer = customer;
-        this.attendees = attendees;
-        this.room = room;
-        this.date = date;
-        this.time = time;
         this.privateSpeaker = privateSpeaker;
     }
 
@@ -108,6 +99,7 @@ public class Booking {
     public LocalTime getTime() {
         return time;
     }
+
     public void setTime(LocalTime time) {
         this.time = time;
     }
@@ -131,6 +123,7 @@ public class Booking {
     public Customer getCustomer() {
         return customer;
     }
+
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }

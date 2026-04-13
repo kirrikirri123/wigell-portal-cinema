@@ -27,8 +27,6 @@ public class Customer {
     private List<Ticket> ticketsList = new ArrayList<>();
     @Column(length = 50, nullable = false, unique = true)
     private String username;
-
-
     //@Column(name= "keycloak_user_id",unique = true, length = 36)
     //private String keycloakUserId;
 

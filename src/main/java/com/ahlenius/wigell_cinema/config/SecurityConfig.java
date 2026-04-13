@@ -1,6 +1,5 @@
 package com.ahlenius.wigell_cinema.config;
 
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -26,28 +25,27 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf (csrf -> csrf.disable())
-                .sessionManagement(sm ->sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/**").hasAnyRole("USER","ADMIN")
+                        .requestMatchers("/api/v1/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated()
                 )
-  .oauth2ResourceServer(oauth -> oauth.jwt(
+                .oauth2ResourceServer(oauth -> oauth.jwt(
                         jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter())))
                 .exceptionHandling(e -> e
                         .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
                 );
         return http.build();
     }
-
-    public Converter<Jwt,? extends AbstractAuthenticationToken> jwtAuthConverter() {
+    public Converter<Jwt, ? extends AbstractAuthenticationToken> jwtAuthConverter() {
         return jwt -> {
             Collection<GrantedAuthority> authorities = new ArrayList<>();
 
             Map<String, Object> realmAccess = jwt.getClaimAsMap("realm_access");
-            if(realmAccess != null && realmAccess.get("roles") instanceof Collection<?> rawRoles){
-                for(Object r : rawRoles) {
+            if (realmAccess != null && realmAccess.get("roles") instanceof Collection<?> rawRoles) {
+                for (Object r : rawRoles) {
                     String role = String.valueOf(r).toUpperCase();
                     authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
                 }
